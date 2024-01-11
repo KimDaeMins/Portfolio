@@ -65,7 +65,7 @@
 
     구현위치 - CSpiderTank_Idle.cpp 61~115
 
-## 개선사항
+## 회전값 적용 개선사항
 
     Unity를 배우며 이 방법이 아닌 쿼터니언을 사용했다면 훨씬 쉽고 빠른 코드가 되지않았을까 싶습니다.
 
@@ -73,3 +73,15 @@
 
     그래도 얻어간 점이라면 행렬에 대한 이해를 확실히 했다고 생각합니다.
   
+### 이동값의 적용 예시
+
+<img width="232" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/051233e9-d9b3-467a-b78d-88e13fa2aa67">
+
+    뼈의 길이를 플레이어에게까지 늘려 혓바닥 갈고리가 플레이어에게 닿는 모습
+    
+<img width="635" alt="8-3p" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/0b83804d-0ae9-4b9f-ad16-1fcbfe01b9ff">
+
+<img width="662" alt="8-2" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/dfc77554-34a3-40eb-92de-dc658994164e">
+
+#### 1. 몬스터의 뼈 -> 플레이어로 이동량(magnitude)을 구합니다
+
