@@ -81,7 +81,5 @@
     
 <img width="635" alt="8-3p" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/0b83804d-0ae9-4b9f-ad16-1fcbfe01b9ff">
 
-<img width="662" alt="8-2" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/dfc77554-34a3-40eb-92de-dc658994164e">
-
 #### 1. 몬스터의 뼈 -> 플레이어로 이동량(magnitude)을 구합니다
 
