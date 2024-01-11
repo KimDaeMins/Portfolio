@@ -25,7 +25,7 @@
 
   그래서 현재 Bone의 TransformationMatrix(회전 및 이동값이 들어있는 매트릭스) 의 앞에서 ControlMatrix(회전 행렬) 을 곱해주고 뒤에서 ControllTranslationMatrix(이동 행렬) 을 곱해주어 행렬 계산의 오차를 없앴습니다.
 
-  구현 위치 -  CHierarchyNode.cpp - 40~76 Line
+  구현 위치 -  HierarchyNode.cpp - 40~76 Line
 
 ### 회전값의 적용 예시
 
@@ -63,7 +63,7 @@
 
     3-4. 3-2 * 3-3 * 3-1 의 값을 컨트롤 매트릭스에 적용합니다.
 
-    구현위치 - CSpiderTank_Idle.cpp 61~115
+    구현위치 - SpiderTank_Idle.cpp 61~115
 
 ## 회전값 적용 개선사항
 
@@ -81,5 +81,25 @@
     
 <img width="635" alt="8-3p" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/0b83804d-0ae9-4b9f-ad16-1fcbfe01b9ff">
 
-#### 1. 몬스터의 뼈 -> 플레이어로 이동량(magnitude)을 구합니다
+#### 1. 몬스터를 플레이어 방향으로 회전합니다.
+    
+    1-1. 플레이어 - 몬스터 -> 플레이어로의 방향(dir)
+
+    1-2. dir벡터에 맞춰서 Look, Right, Up 벡터를 설정 후 회전행렬을 구성합니다
+
+#### 2. 플레이어와의 거리 - 최대거리의 크기를 구한 후 1초당 이동량을 구합니다
+
+    2-1. 이미 회전을 시킨 상태이니 z축 양의방향을 바라보는 상태에서 애니메이션상 
+    
+    뼈의 최대 길이를 뺀 값(고정값 6)을 구합니다. -> 애니메이션에서 뼈가 살짝 늘어나는 부분떄문에 오차를 구했습니다.
+
+    2-2. (플레이어 위치 - 애니메이션상 뼈가 제일 늘어났을때의 위치) 의 길이만큼 z축 양의방향으로 늘린 벡터를 만듭니다.
+
+    2-3. 애니메이션에 따라 서서히 증가해야하기때문에 속도값과 Duration을 구해서 한 Tick당 이동량을 구합니다.
+
+#### 3. 특정 뼈의 ControlTranslationMatrix에 적용합니다
+
+    3-1. 2-3 에서 구한 Tick당 이동량을 Update에서 m_ControlTranslationMatix에 적용합니다.
+
+     구현위치 - FrogTongueInit.cpp 61~115
 
