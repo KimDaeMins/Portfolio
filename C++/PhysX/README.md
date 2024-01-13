@@ -1,19 +1,15 @@
-# Control & Transformation Matrix
+# PhysX
 
-## 애니메이션 상으로는 조절되지 않은 뼈의 추가적인 회전 및 이동
+## PhysX 작동구조, 객체 충돌 관리 및 저장, RigidBody, Collider생성을 구현했습니다.
 
-<img width="232" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/23e31200-c1a8-49cf-b4b9-15561b6c6914">
-
+<img width="268" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/2c09c8e3-d001-4786-9009-a78ab27b4204">
 
 ## 핵심 코드
 
-<img width="791" alt="8-1" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/77ed9525-1f98-434a-867e-0b53a07ef490">
 
 ## 설명
 
-  부모의 TransformationMatrix 를 적용하는 Update_CombinedTransformationMatrix() 함수에서
-
-  회전값과 이동값의 매트릭스를 추가로 곱해주어 적용합니다. ( m_ControllMatrix, m_ControllTranslationMatrix)
+  
 
 ### 회전값과 이동값 매트릭스를 나눈 이유
 
