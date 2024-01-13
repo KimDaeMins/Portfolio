@@ -1,4 +1,4 @@
-# Control & Transformation Matrix
+# RootMotion
 
 ## 애니메이션 상으로는 조절되지 않은 뼈의 추가적인 회전 및 이동
 
