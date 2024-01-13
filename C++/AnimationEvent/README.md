@@ -1,4 +1,4 @@
-<img width="618" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/10a9d7b1-b05d-44e3-8297-0e78d081d5fd"># Animation Event
+# Animation Event
 
 ## 특정 프레임 구간에서에 이벤트 생성
 
