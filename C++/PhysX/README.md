@@ -52,6 +52,17 @@ RigidBody 생성시 필터를 미리 정해줍니다.
 
 충돌 시 필터끼리의 &연산을 이용하여 서로 충돌이 가능한지 여부를 판단한 후 충돌판정합니다.
 
+
+시각화
+
+<img width="431" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/0612aeab-8b31-41ef-8dba-11b5bda4ab7c">
+
+DXDraw를 이용하여 Collider를 시각화했습니다.
+
+<img width="545" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/4e1d7028-7839-4654-a63e-3661ea98fe95">
+
+충돌을 자세히 분석하기 위하여 PhysicsSystem을 설정할 때 PVD(Physics visual Debugger) 를 설정하고 이용했습니다.
+
 ## 개선사항
 
 조금 더 빠르고 좋은 코드를 만들 수 있었을 것 같습니다. 일단 함수포인터를 사용하지 않았던점이 조금 아쉽습니다.
