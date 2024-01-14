@@ -1,4 +1,4 @@
-# PhysX
+<img width="252" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/d3cbc990-1638-49ef-988f-9850f31fc4ac"><img width="561" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/ae3e6141-04cc-43ed-a3c9-d672750dfd1c"><img width="651" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/c1efc7f2-5ba9-4592-859a-96733debd789"><img width="660" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/0d0a954f-78f7-4c97-9ad1-760db5027f53"><img width="798" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/a83486de-c318-42b2-8036-2b683ea07ab2"><img width="731" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/faee4522-39b5-4a53-a2a7-43acf5e377cb"><img width="260" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/bdace07b-561d-4fef-b011-1053d8bf3330"><img width="884" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/7ef82687-e4c4-4726-a235-8a8887073078"># PhysX
 
 ## PhysX 작동구조, 객체 충돌 관리 및 저장, RigidBody, Collider생성을 구현했습니다.
 
@@ -6,96 +6,57 @@
 
 ## 핵심 코드
 
+<img width="691" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/d2a07cad-17c1-4c3f-81e1-58d0d027ab5f">
 
-## 설명
+Collider 생성 과정 (Sphere)
 
-  
+<img width="884" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/5fb30784-62ca-41a1-ba47-f309dd075193">
 
-### 회전값과 이동값 매트릭스를 나눈 이유
+RigidBody 생성
 
-  매트릭스의 곱을 적용할 때 크기 -> 자전 -> 이동 -> 공전 -> 부모 의 순으로 곱해주어야 합니다.(행렬의 곱은 역이 성립하지 않기 떄문에)
+<img width="608" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/d31d68c8-3fa6-4963-87c5-7bc74a122a97">
 
-  이 규칙을 어기고 이동을 한 후 크기조절 매트릭스를 곱하면 이동거리가 크기조절 매트릭스의 크기만큼 커지게 되는 현상들을 볼 수 있습니다.  
+RigidBody의 Fixed_Update - 움직임 감지 후 좌표조절
 
-  이런 상황에서 정확한 추가 회전값과 이동값을 기존 TramsformationMatrix에 전달하려면 회전과 이동량을 따로 나누어서 전달해야한다고 판단했습니다.
+<img width="260" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/6523d8c5-849c-46f7-aae4-1871f1d9c485">
 
-  그래서 현재 Bone의 TransformationMatrix(회전 및 이동값이 들어있는 매트릭스) 의 앞에서 ControlMatrix(회전 행렬) 을 곱해주고 뒤에서 ControllTranslationMatrix(이동 행렬) 을 곱해주어 행렬 계산의 오차를 없앴습니다.
+PhysXSystem의 Update - Apply_Tick에선 충돌 이후 객체의 변화를 각각객체에 적용시킵니다.
 
-  구현 위치 -  HierarchyNode.cpp - 40~76 Line
+<img width="731" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/d25296b3-aa7a-4435-b25a-d15e7657e04e">
 
-### 회전값의 적용 예시
+충돌시 상황에따라 각 리지드바디에 충돌체 저장
 
-<img width="234" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/29c09d03-fb16-4f43-9305-a2d4b9a97d12">
+<img width="705" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/022b98ee-b81c-4868-a0a3-09fb57b9b8c5">
 
-  플레이어를 바라보는 보스몬스터의 머리
+저장된 충돌체를 한개씩 가져옵니다 . Why? 리지드바디를 컴포넌트로 만들었기떄문 - 함수포인터를 들고있는다음 충돌때 함수를 전달받아서 작동하는게 좋았을듯 합니다.
 
-<img width="662" alt="8-2" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/d4f3c328-b5ae-4f74-9f2f-78783f54a3d3">
+<img width="660" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/77a803be-ccb7-49b5-8adb-2404335450b0">
 
-#### 1. 몬스터의 뼈 -> 플레이어로의 Y축 회전량을 구합니다
+하나씩 가져온 충돌체의 태그를 확인 후 그에 맞는 작동을 하는 모습입니다.
 
-    1-1. 몬스터의 방향벡터(MyDir), 플레이어로의 방향벡터(ToTarget)의 Y값을 제거합니다
+필터링
 
-    1-2. Y값이 제거된 MyDir과 ToTarget을 정규화 시킨 후 내적 합니다 (MyDir·ToTarget)
+<img width="252" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/6dac1be5-00dc-4eed-aeab-4cbd70b424b5">
 
-    1-3. 결과값으로 나온 cosA값의 역코사인값을 가져옵니다 ( 라디안각이 추출됨 )
+<img width="538" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/ab609f88-4064-4d14-9da5-ee6ac355fae7">
 
-    1-4. 뼈의 회전범위를 조절합니다.
+<img width="651" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/863fdfb0-e2eb-4a8a-846a-cacc910958f1">
 
-    1-5. 외적을 통해 좌우를 판단하여 회전각에 적용합니다. (MyDir X ToTarget 의 y값으로 비교)
+<img width="667" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/420ff4d6-e454-44df-9c74-46e5a1a558d6">
 
-#### 2. 몬스터의 뼈 -> 플레이어로의 X축 회전량을 구합니다
+<img width="561" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/56d4b6f5-fe3f-41b7-9394-bef51ffd55f9">
 
-    2-1. 1-1에서 구한 ToTarget의 Y값을 제거한 Vector와 ToTarget을 정규화시킨 후 내적합니다 (ZeroYToTarget·ToTarget)
+필터 충돌을 그룹화 시키고 한 객체가 충돌할 수 있는 객체분류를 미리 정의합니다.
 
-    2-2. 플레이어의 현재 위치와 뼈의 위치를 비교하여 상하를 판단하여 회전각에 적용합니다
+RigidBody 생성시 필터를 미리 정해줍니다.
 
-#### 3. 회전 매트릭스를 만든 후 컨트롤매트릭스에 적용합니다.
+충돌 시 필터끼리의 &연산을 이용하여 서로 충돌이 가능한지 여부를 판단한 후 충돌판정합니다.
 
-    3-1. 회전할 뼈의 매트릭스의 회전값의 역행렬을 구합니다. (원점에서 회전하기 위함)
-  
-    3-2. 1, 2에서 구한 회전값으로 회전매트릭스를 만듭니다.
-  
-    3-3. 회전 오차를 조절하기위하여 싱크매트릭스를 만듭니다.
-
-    3-4. 3-2 * 3-3 * 3-1 의 값을 컨트롤 매트릭스에 적용합니다.
-
-    구현위치 - SpiderTank_Idle.cpp 61~115
-
-## 회전값 적용 개선사항
+## 개선사항
 
     Unity를 배우며 이 방법이 아닌 쿼터니언을 사용했다면 훨씬 쉽고 빠른 코드가 되지않았을까 싶습니다.
 
     보스의 회전에서 보스to플레이어까지의 회전을 그냥 적용시키면 되는 부분을 돌아서 갔다고 생각하는데,
 
     그래도 얻어간 점이라면 행렬에 대한 이해를 확실히 했다고 생각합니다.
-  
-### 이동값의 적용 예시
-
-<img width="232" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/051233e9-d9b3-467a-b78d-88e13fa2aa67">
-
-    뼈의 길이를 플레이어에게까지 늘려 혓바닥 갈고리가 플레이어에게 닿는 모습
-    
-<img width="635" alt="8-3p" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/0b83804d-0ae9-4b9f-ad16-1fcbfe01b9ff">
-
-#### 1. 몬스터를 플레이어 방향으로 회전합니다.
-    
-    1-1. 플레이어 - 몬스터 -> 플레이어로의 방향(dir)
-
-    1-2. dir벡터에 맞춰서 Look, Right, Up 벡터를 설정 후 회전행렬을 구성합니다
-
-#### 2. 플레이어와의 거리 - 최대거리의 크기를 구한 후 1초당 이동량을 구합니다
-
-    2-1. 이미 회전을 시킨 상태이니 z축 양의방향을 바라보는 상태에서 애니메이션상 
-    
-    뼈의 최대 길이를 뺀 값(고정값 6)을 구합니다. -> 애니메이션에서 뼈가 살짝 늘어나는 부분떄문에 오차를 구했습니다.
-
-    2-2. (플레이어 위치 - 애니메이션상 뼈가 제일 늘어났을때의 위치) 의 길이만큼 z축 양의방향으로 늘린 벡터를 만듭니다.
-
-    2-3. 애니메이션에 따라 서서히 증가해야하기때문에 속도값과 Duration을 구해서 한 Tick당 이동량을 구합니다.
-
-#### 3. 특정 뼈의 ControlTranslationMatrix에 적용합니다
-
-    3-1. 2-3 에서 구한 Tick당 이동량을 Update에서 m_ControlTranslationMatix에 적용합니다.
-
-     구현위치 - FrogTongueInit.cpp 61~115
 
