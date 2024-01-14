@@ -1,19 +1,20 @@
-# Control & Transformation Matrix
+# Pattern Table
 
-## 애니메이션 상으로는 조절되지 않은 뼈의 추가적인 회전 및 이동
+## 몬스터의 패턴을 설정할때 더 세부적인 조건을 따져서 현명한 AI를 만들기 위하여 사용했습니다
 
-<img width="232" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/23e31200-c1a8-49cf-b4b9-15561b6c6914">
+<img width="677" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/7c558063-9bef-410f-b65b-1695c8994db3">
 
+<img width="868" alt="1차 스파이더 생각" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/23d377d7-3016-4d89-950a-bbdc5de643a3">
 
 ## 핵심 코드
 
-<img width="791" alt="8-1" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/77ed9525-1f98-434a-867e-0b53a07ef490">
+<img width="502" alt="9-1p" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/ab398988-9a15-4743-901b-41e3a4e12f3a">
 
-## 설명
+플레이어와 몬스터 사이의 거리, 각도, 몬스터의 이동가능성을 판단하여 패턴테이블을 구성합니다.
 
-  부모의 TransformationMatrix 를 적용하는 Update_CombinedTransformationMatrix() 함수에서
+구성된 패턴 테이블의 수치를 확률로 두고 어떤 패턴을 사용할지 결정합니다.
 
-  회전값과 이동값의 매트릭스를 추가로 곱해주어 적용합니다. ( m_ControllMatrix, m_ControllTranslationMatrix)
+MultyThread를 이용해서 시간이 걸릴 수 있는 계산을 따로 스레드로 계산했습니다.
 
 ### 회전값과 이동값 매트릭스를 나눈 이유
 
