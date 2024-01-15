@@ -15,10 +15,12 @@
 
 <img width="269" alt="13-8" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/61aaa463-c2e8-4b09-9134-329631297dcc">
 
-Easing그래프의 변화량을 이용했습니다.
+ㅤ
 
 <img width="405" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/5804b65a-105e-4bc0-b84f-1631083c1db1">
 
-실제 사용에서는 이펙트의 LifeTime을 주고 Easing그래프를 적용하여 LifeTime 감소에 따라 객체의 크기가 변화하는 방식을 이용했습니다.
+몬스터의 회전이나, 이펙트의 크기, 객체의 속도 등을 조절할 떄 사용하였고
+
+Easing Graph를 적용하여 다양한 그래프의 형태로 보간이 가능하도록 구현했습니다.
 
 구현위치 - Easing.cpp , WandBulletExplosion.cpp Line[62], [93-97]
