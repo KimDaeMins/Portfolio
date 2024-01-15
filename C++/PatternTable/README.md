@@ -28,6 +28,8 @@ c++에서 지원하는 _beginthreadex함수를 호출하여 패턴계산에 Thre
 
 스레드 함수 내부에서 멤버변수의 값을 바꾸기 때문에 안정성을 위하여 CriticalSection을 이용했습니다.
 
+구현위치 - SpiderTank_Idle.cpp Line[8~19][34~46][182~404]
+
 ### Data Parsing
 
 <img width="578" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/57dc1de7-0b20-4e9b-9e86-97db7b6cbdd2">
@@ -43,6 +45,8 @@ PARSER::CSVParser를 이용하여 파일 패스 경로를 넣어서 엑셀 데�
 <img width="316" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/7faad248-fc93-4925-8fb8-0e210c292ba3">
 
 모든 가중치의 합과 1사이의 랜덤값을 추출한 후 인덱스 한개씩 검사하며 어떤 패턴을 사용할지 결정합니다.
+
+구현위치 - SpiderTank_Idle.cpp Line[182~404] DataManager.cpp Line[213~242][446~458] RandomManager.cpp Line[26~51]
 
 ## 패턴 테이블 개선사항
 
