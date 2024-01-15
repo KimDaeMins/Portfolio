@@ -28,7 +28,7 @@ c++에서 지원하는 _beginthreadex함수를 호출하여 패턴계산에 Thre
 
 스레드 함수 내부에서 멤버변수의 값을 바꾸기 때문에 안정성을 위하여 CriticalSection을 이용했습니다.
 
-구현위치 - SpiderTank_Idle.cpp Line[8~19][34~46][182~404]
+구현위치 - SpiderTank_Idle.cpp Line[8~19],[34~46],[182~404]
 
 ### Data Parsing
 
