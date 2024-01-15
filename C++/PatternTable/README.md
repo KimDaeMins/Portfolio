@@ -36,9 +36,9 @@ c++에서 지원하는 _beginthreadex함수를 호출하여 패턴계산에 Thre
 
 PARSER::CSVParser를 이용하여 파일 패스 경로를 넣어서 엑셀 데이터를 vector<vector<string>> 타입으로 저장합니다.
 
-<img width="216" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/08f06014-02f4-45cb-8e66-43fde2cb3620">
-
 <img width="670" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/b6f905d6-d794-43ef-9e7c-5f46ce6523fa">
+
+<img width="216" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/08f06014-02f4-45cb-8e66-43fde2cb3620">
 
 배열을 미리 int형으로 만들어 둔 후 각 상황에 맞는 가중치를 int형으로 가져옵니다.
 
@@ -46,7 +46,7 @@ PARSER::CSVParser를 이용하여 파일 패스 경로를 넣어서 엑셀 데�
 
 모든 가중치의 합과 1사이의 랜덤값을 추출한 후 인덱스 한개씩 검사하며 어떤 패턴을 사용할지 결정합니다.
 
-구현위치 - SpiderTank_Idle.cpp Line[182~404] DataManager.cpp Line[213~242][446~458] RandomManager.cpp Line[26~51]
+구현위치 - SpiderTank_Idle.cpp Line[182-404] DataManager.cpp Line[213-242], [446-458] RandomManager.cpp Line[26-51]
 
 ## 패턴 테이블 개선사항
 
