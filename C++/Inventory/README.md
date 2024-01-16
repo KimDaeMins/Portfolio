@@ -1,105 +1,46 @@
-# Control & Transformation Matrix
+# Inventory
 
-## 애니메이션 상으로는 조절되지 않은 뼈의 추가적인 회전 및 이동
+## 아이템 획득 및 단축키 배치, 아이템슬롯, 아이템 사용, 획득 구현
 
-<img width="232" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/23e31200-c1a8-49cf-b4b9-15561b6c6914">
+<img width="887" alt="26-1" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/2281a7f1-8da9-4f38-836d-0bbaf7c66ff9">
 
 
 ## 핵심 코드
 
-<img width="791" alt="8-1" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/77ed9525-1f98-434a-867e-0b53a07ef490">
+<img width="652" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/0ef8fab0-3750-418e-b77d-d3fd6b4be8fc">
 
-## 설명
+아이템의 갯수 및 슬롯의 크기가 변동할 수 있습니다. 그에 맞게 vector컨테이너를 이용하여 아이템 슬롯의 크기를 유동적으로 조절했습니다. 골드 , 포션 등 단순 숫자로 나타낼 수 있는 녀석들은 int형변수를 이용했습니다.
 
-  부모의 TransformationMatrix 를 적용하는 Update_CombinedTransformationMatrix() 함수에서
+<img width="949" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/b74e19cc-60cf-4651-887d-09d8e5844c06">
 
-  회전값과 이동값의 매트릭스를 추가로 곱해주어 적용합니다. ( m_ControllMatrix, m_ControllTranslationMatrix)
+획득 : 아이템의 타입, 갯수를 입력받아 배열에 같은 타입이 있다면 갯수를 증가시켜주고 없다면 새로 만들어서 인벤토리 vector 컨테이너에 할당 후 UI로 보여줍니다.
 
-### 회전값과 이동값 매트릭스를 나눈 이유
+<img width="431" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/a3e3fe05-89e5-4f19-8fd2-d1605950ddaa">
 
-  매트릭스의 곱을 적용할 때 크기 -> 자전 -> 이동 -> 공전 -> 부모 의 순으로 곱해주어야 합니다.(행렬의 곱은 역이 성립하지 않기 떄문에)
+단축키 등록 : vector컨테이너에 할당된 아이템의 슬롯좌표를 받아와서 퀵슬롯에 있는 아이템 위에 덮어씌워줍니다. 실제 데이터를 관리하는 부분은 따로 인벤토리에 존재하고 단순 보여주는 용도의 슬롯입니다.
 
-  이 규칙을 어기고 이동을 한 후 크기조절 매트릭스를 곱하면 이동거리가 크기조절 매트릭스의 크기만큼 커지게 되는 현상들을 볼 수 있습니다.  
+<img width="926" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/16196aa0-9b30-4603-a2f7-29da15ea488f">
 
-  이런 상황에서 정확한 추가 회전값과 이동값을 기존 TramsformationMatrix에 전달하려면 회전과 이동량을 따로 나누어서 전달해야한다고 판단했습니다.
+사용 : 아이템의 갯수를 추출하고, 키를 받아 어떤 아이템을 사용할지 정한 후 아이템을 사용합니다. 아이템의 갯수가 0개라면 삭제합니다.
 
-  그래서 현재 Bone의 TransformationMatrix(회전 및 이동값이 들어있는 매트릭스) 의 앞에서 ControlMatrix(회전 행렬) 을 곱해주고 뒤에서 ControllTranslationMatrix(이동 행렬) 을 곱해주어 행렬 계산의 오차를 없앴습니다.
+### 부적 아이템
 
-  구현 위치 -  HierarchyNode.cpp - 40~76 Line
+  <img width="749" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/3a7881ef-e397-4244-ba19-9ddbcbeb421f">
 
-### 회전값의 적용 예시
+부적 아이템의 경우 BitFlag를 이용하여 여러 부적 옵션을 한번에 적용할 수 있게 만들었습니다.
 
-<img width="234" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/29c09d03-fb16-4f43-9305-a2d4b9a97d12">
+<img width="380" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/74e95552-4bbe-4d71-b4e1-50231ba2bea0">
 
-  플레이어를 바라보는 보스몬스터의 머리
+특정 상황에서 &연산을 하여 부적 효과를 적용하는 경우와 하지않는경우를 나눕니다.
 
-<img width="662" alt="8-2" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/d4f3c328-b5ae-4f74-9f2f-78783f54a3d3">
+### 플레이어의 아이템별 모션 적용
 
-#### 1. 몬스터의 뼈 -> 플레이어로의 Y축 회전량을 구합니다
+<img width="386" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/ca79119f-3894-4426-b99f-7adc1848960a">
 
-    1-1. 몬스터의 방향벡터(MyDir), 플레이어로의 방향벡터(ToTarget)의 Y값을 제거합니다
+<img width="441" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/af87f75c-ec7c-4ec7-8b19-fc0a3afd95b9">
 
-    1-2. Y값이 제거된 MyDir과 ToTarget을 정규화 시킨 후 내적 합니다 (MyDir·ToTarget)
+슬롯에 있는 아이템의 타입에 맞춰 플레이어의 모션을 바꿀 수 있도록 구현했습니다.
+특정 키를 누르면 함수의 인자로 넣은 포인터에 값을 전달하여 아이템타입을 전달받습니다.
 
-    1-3. 결과값으로 나온 cosA값의 역코사인값을 가져옵니다 ( 라디안각이 추출됨 )
-
-    1-4. 뼈의 회전범위를 조절합니다.
-
-    1-5. 외적을 통해 좌우를 판단하여 회전각에 적용합니다. (MyDir X ToTarget 의 y값으로 비교)
-
-#### 2. 몬스터의 뼈 -> 플레이어로의 X축 회전량을 구합니다
-
-    2-1. 1-1에서 구한 ToTarget의 Y값을 제거한 Vector와 ToTarget을 정규화시킨 후 내적합니다 (ZeroYToTarget·ToTarget)
-
-    2-2. 플레이어의 현재 위치와 뼈의 위치를 비교하여 상하를 판단하여 회전각에 적용합니다
-
-#### 3. 회전 매트릭스를 만든 후 컨트롤매트릭스에 적용합니다.
-
-    3-1. 회전할 뼈의 매트릭스의 회전값의 역행렬을 구합니다. (원점에서 회전하기 위함)
-  
-    3-2. 1, 2에서 구한 회전값으로 회전매트릭스를 만듭니다.
-  
-    3-3. 회전 오차를 조절하기위하여 싱크매트릭스를 만듭니다.
-
-    3-4. 3-2 * 3-3 * 3-1 의 값을 컨트롤 매트릭스에 적용합니다.
-
-    구현위치 - SpiderTank_Idle.cpp 61~115
-
-## 회전값 적용 개선사항
-
-    Unity를 배우며 이 방법이 아닌 쿼터니언을 사용했다면 훨씬 쉽고 빠른 코드가 되지않았을까 싶습니다.
-
-    보스의 회전에서 보스to플레이어까지의 회전을 그냥 적용시키면 되는 부분을 돌아서 갔다고 생각하는데,
-
-    그래도 얻어간 점이라면 행렬에 대한 이해를 확실히 했다고 생각합니다.
-  
-### 이동값의 적용 예시
-
-<img width="232" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/051233e9-d9b3-467a-b78d-88e13fa2aa67">
-
-    뼈의 길이를 플레이어에게까지 늘려 혓바닥 갈고리가 플레이어에게 닿는 모습
-    
-<img width="635" alt="8-3p" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/0b83804d-0ae9-4b9f-ad16-1fcbfe01b9ff">
-
-#### 1. 몬스터를 플레이어 방향으로 회전합니다.
-    
-    1-1. 플레이어 - 몬스터 -> 플레이어로의 방향(dir)
-
-    1-2. dir벡터에 맞춰서 Look, Right, Up 벡터를 설정 후 회전행렬을 구성합니다
-
-#### 2. 플레이어와의 거리 - 최대거리의 크기를 구한 후 1초당 이동량을 구합니다
-
-    2-1. 이미 회전을 시킨 상태이니 z축 양의방향을 바라보는 상태에서 애니메이션상 
-    
-    뼈의 최대 길이를 뺀 값(고정값 6)을 구합니다. -> 애니메이션에서 뼈가 살짝 늘어나는 부분떄문에 오차를 구했습니다.
-
-    2-2. (플레이어 위치 - 애니메이션상 뼈가 제일 늘어났을때의 위치) 의 길이만큼 z축 양의방향으로 늘린 벡터를 만듭니다.
-
-    2-3. 애니메이션에 따라 서서히 증가해야하기때문에 속도값과 Duration을 구해서 한 Tick당 이동량을 구합니다.
-
-#### 3. 특정 뼈의 ControlTranslationMatrix에 적용합니다
-
-    3-1. 2-3 에서 구한 Tick당 이동량을 Update에서 m_ControlTranslationMatix에 적용합니다.
-
-     구현위치 - FrogTongueInit.cpp 61~115
+#### 인벤토리는 헤더에 함수별 설명을 적어두어서 다른 사람들이 쓸때 보고 쓸 수 있도록 잘 써놓았습니다. 헤더파일을 참고해주세요.
 
