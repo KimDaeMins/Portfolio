@@ -1,6 +1,6 @@
 # WaveManager
 
-## 몬스터웨이브 레벨전환 및 클리어 보상 구
+## 몬스터웨이브 레벨전환 및 클리어 보상 구현
 
 <img width="866" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/2dd50815-a031-4215-a7b8-47974619fffa">
 
@@ -25,6 +25,8 @@ Wave의 종료조건은 WaveManager에서 업데이트마다 판단하며 (시�
   <img width="668" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/938f2cd7-4f09-4421-a4f9-d92ad126fa9d">
 
   포인트들을 유니티에서 미리 자리를 잡은 후(유니티를 툴 용도로 사용했습니다) 엑셀로 전환한 다음 엑셀에서 좌표를 읽어들이는 방식을 이용했습니다. 어느정도의 랜덤성을 위하여 위치들을 섞어주었습니다.
+
+<img width="689" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/baa2aa11-e7e1-456e-b9f0-7634783ba215">
 
 <img width="671" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/feedee1d-ae81-4d76-9cfa-43f29866dd72">
 
