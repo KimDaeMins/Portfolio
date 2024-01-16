@@ -36,9 +36,7 @@
 ### 플레이어의 아이템별 모션 적용
 
 <img width="441" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/af87f75c-ec7c-4ec7-8b19-fc0a3afd95b9">
-
 ㅤ
-
 <img width="386" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/ca79119f-3894-4426-b99f-7adc1848960a">
 
 슬롯에 있는 아이템의 타입에 맞춰 플레이어의 모션을 바꿀 수 있도록 구현했습니다.
