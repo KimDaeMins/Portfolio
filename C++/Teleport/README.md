@@ -26,6 +26,9 @@ Raycast를 이용한 도착지 판별의 조건들입니다.
 
 각 벽과 땅을 collider로 구현하였고, 오르막길과 내리막길이 있어서 텔레포트 도착지를 좀 더 복잡하게 판별한 느낌이 있습니다.
 
+Raycast구현위치 - PhysicsSystem.cpp Line[417-476] 
+
+Teleport구현위치 - StateTeleport.cpp Line[38-216] 
 
 ## 개선사항
 
