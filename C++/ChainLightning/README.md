@@ -1,105 +1,74 @@
-# Control & Transformation Matrix
+# ChainLightning
 
 ## 애니메이션 상으로는 조절되지 않은 뼈의 추가적인 회전 및 이동
 
-<img width="232" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/23e31200-c1a8-49cf-b4b9-15561b6c6914">
-
+<img width="824" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/9e7c398f-82ba-463d-956e-798b7325a5b5">
 
 ## 핵심 코드
 
-<img width="791" alt="8-1" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/77ed9525-1f98-434a-867e-0b53a07ef490">
+![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/a5d05ac8-8fb8-49b8-9f2d-6483bdc4cb5c)
 
-## 설명
+스킬 최초 충돌 객체를 Key값으로 하고 그 객체 기준 가장 가까운 객체를 Second값으로 하는 Pair객체 생성 후 map에 넣는 방식으로 Monster를 연결합니다.
 
-  부모의 TransformationMatrix 를 적용하는 Update_CombinedTransformationMatrix() 함수에서
+![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/5e21549d-bd40-4dda-a804-d3f3df0a0922)
 
-  회전값과 이동값의 매트릭스를 추가로 곱해주어 적용합니다. ( m_ControllMatrix, m_ControllTranslationMatrix)
+Value가 된 객체들을 Key값으로 둔 후 순회하는 방식으로, 연결되는 객체가 없어질때까지 반복순회하며 계층구조를 만듭니다.
 
-### 회전값과 이동값 매트릭스를 나눈 이유
+<img width="522" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/6bbf348f-f624-4260-ba1a-9b3431b6a107">
 
-  매트릭스의 곱을 적용할 때 크기 -> 자전 -> 이동 -> 공전 -> 부모 의 순으로 곱해주어야 합니다.(행렬의 곱은 역이 성립하지 않기 떄문에)
+map계층구조를 순회하며 탐색합니다.
 
-  이 규칙을 어기고 이동을 한 후 크기조절 매트릭스를 곱하면 이동거리가 크기조절 매트릭스의 크기만큼 커지게 되는 현상들을 볼 수 있습니다.  
+### 상세 설명
 
-  이런 상황에서 정확한 추가 회전값과 이동값을 기존 TramsformationMatrix에 전달하려면 회전과 이동량을 따로 나누어서 전달해야한다고 판단했습니다.
+#### 1. 체인 라이트닝을 순회할 리스트를 만듭니다.
 
-  그래서 현재 Bone의 TransformationMatrix(회전 및 이동값이 들어있는 매트릭스) 의 앞에서 ControlMatrix(회전 행렬) 을 곱해주고 뒤에서 ControllTranslationMatrix(이동 행렬) 을 곱해주어 행렬 계산의 오차를 없앴습니다.
+    1-1. 오브젝트 매니저의 오브젝트리스트를 전부 들고와서 한 리스트에 넣습니다.
 
-  구현 위치 -  HierarchyNode.cpp - 40~76 Line
+    1-2. 최대 체인수와 길이를 조절합니다.
 
-### 회전값의 적용 예시
+    1-3. 몬스터간의 거리를 저장할 Distance배열도 만들어둡니다.
 
-<img width="234" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/29c09d03-fb16-4f43-9305-a2d4b9a97d12">
+    1-4. 최초로 맞은 몬스터는 몬스터리스트에서 제외합니다 ( 이 몬스터를 기준으로 순회하여 집어넣을 예정입니다 )
 
-  플레이어를 바라보는 보스몬스터의 머리
+    구현위치 IceDaggerLightnign.cpp Line[119-141]
 
-<img width="662" alt="8-2" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/d4f3c328-b5ae-4f74-9f2f-78783f54a3d3">
+#### 2. 1-3몬스터 기준 가장 가까운 몬스터를 찾아서 저장합니다. 
 
-#### 1. 몬스터의 뼈 -> 플레이어로의 Y축 회전량을 구합니다
+    2-1. 몬스터 리스트를 순회하여 Distance를 구하고 현재 저장된 몬스터중 가장 먼 녀석과 비교합니다.
 
-    1-1. 몬스터의 방향벡터(MyDir), 플레이어로의 방향벡터(ToTarget)의 Y값을 제거합니다
+    2-2. 저장된 Distance보다 짧다면 NearObject에 저장합니다.
 
-    1-2. Y값이 제거된 MyDir과 ToTarget을 정규화 시킨 후 내적 합니다 (MyDir·ToTarget)
+    2-3. 넣은 몬스터들은 몬스터리스트에서 지웁니다. (최초 몬스터 기준 순회기때문에 가장 가까운 적을 단순탐색한 느낌입니다)
 
-    1-3. 결과값으로 나온 cosA값의 역코사인값을 가져옵니다 ( 라디안각이 추출됨 )
-
-    1-4. 뼈의 회전범위를 조절합니다.
-
-    1-5. 외적을 통해 좌우를 판단하여 회전각에 적용합니다. (MyDir X ToTarget 의 y값으로 비교)
-
-#### 2. 몬스터의 뼈 -> 플레이어로의 X축 회전량을 구합니다
-
-    2-1. 1-1에서 구한 ToTarget의 Y값을 제거한 Vector와 ToTarget을 정규화시킨 후 내적합니다 (ZeroYToTarget·ToTarget)
-
-    2-2. 플레이어의 현재 위치와 뼈의 위치를 비교하여 상하를 판단하여 회전각에 적용합니다
-
-#### 3. 회전 매트릭스를 만든 후 컨트롤매트릭스에 적용합니다.
-
-    3-1. 회전할 뼈의 매트릭스의 회전값의 역행렬을 구합니다. (원점에서 회전하기 위함)
-  
-    3-2. 1, 2에서 구한 회전값으로 회전매트릭스를 만듭니다.
-  
-    3-3. 회전 오차를 조절하기위하여 싱크매트릭스를 만듭니다.
-
-    3-4. 3-2 * 3-3 * 3-1 의 값을 컨트롤 매트릭스에 적용합니다.
-
-    구현위치 - SpiderTank_Idle.cpp 61~115
-
-## 회전값 적용 개선사항
-
-    Unity를 배우며 이 방법이 아닌 쿼터니언을 사용했다면 훨씬 쉽고 빠른 코드가 되지않았을까 싶습니다.
-
-    보스의 회전에서 보스to플레이어까지의 회전을 그냥 적용시키면 되는 부분을 돌아서 갔다고 생각하는데,
-
-    그래도 얻어간 점이라면 행렬에 대한 이해를 확실히 했다고 생각합니다.
-  
-### 이동값의 적용 예시
-
-<img width="232" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/051233e9-d9b3-467a-b78d-88e13fa2aa67">
-
-    뼈의 길이를 플레이어에게까지 늘려 혓바닥 갈고리가 플레이어에게 닿는 모습
+    2-4. 체인라이트닝의 계층구조를 표현할 맵에 첫 타겟과 가까운 몬스터Vector를 넣습니다.
     
-<img width="635" alt="8-3p" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/0b83804d-0ae9-4b9f-ad16-1fcbfe01b9ff">
+    구현위치 IceDaggerLightnign.cpp Line[144-191]
 
-#### 1. 몬스터를 플레이어 방향으로 회전합니다.
-    
-    1-1. 플레이어 - 몬스터 -> 플레이어로의 방향(dir)
+#### 3. 2-4에 저장된 가까운 몬스터 Vector를 순회하여 정렬 후 담는 방식을 수행합니다.
 
-    1-2. dir벡터에 맞춰서 Look, Right, Up 벡터를 설정 후 회전행렬을 구성합니다
+    3-1. 몬스터 리스트를 순회하여 기준몬스터와 가까운 몬스터들을 넣습니다.
 
-#### 2. 플레이어와의 거리 - 최대거리의 크기를 구한 후 1초당 이동량을 구합니다
+    3-2. vector를 거리순에 따라 정렬합니다 (Priority_Queue를 사용하면 좀 더 깔끔했을 것 같습니다.)
 
-    2-1. 이미 회전을 시킨 상태이니 z축 양의방향을 바라보는 상태에서 애니메이션상 
-    
-    뼈의 최대 길이를 뺀 값(고정값 6)을 구합니다. -> 애니메이션에서 뼈가 살짝 늘어나는 부분떄문에 오차를 구했습니다.
+    3-3. 가장 가까운 오브젝트를 저장합니다.
 
-    2-2. (플레이어 위치 - 애니메이션상 뼈가 제일 늘어났을때의 위치) 의 길이만큼 z축 양의방향으로 늘린 벡터를 만듭니다.
+    3-4. 가장 가까운 오브젝트가 이미 저장된 오브젝트이면 변경된 오브젝트 기준 저장된 오브젝트들과 전부 비교하여 거리계산 후 교체하는 작업을 진행합니다. 
 
-    2-3. 애니메이션에 따라 서서히 증가해야하기때문에 속도값과 Duration을 구해서 한 Tick당 이동량을 구합니다.
+  구현위치 IceDaggerLightnign.cpp Line[345-494]
 
-#### 3. 특정 뼈의 ControlTranslationMatrix에 적용합니다
+  #### 4. 마지막으로 저장된 map을 순회하여 연결된 번개를 꽃습니다.
 
-    3-1. 2-3 에서 구한 Tick당 이동량을 Update에서 m_ControlTranslationMatix에 적용합니다.
+4-1. 처음 맞은 적을 저장했기떄문에 처음맞은적을 Key로 Value를 찾고 Value에 들어있는 3몬스터를 또 Key값으로 Value를 찾는 방식을 계속 반복합니다.
 
-     구현위치 - FrogTongueInit.cpp 61~115
+ 구현위치 IceDaggerLightnign.cpp Line[234-266]
+
+## 개선사항
+
+이 코드를 구현했을 때는 BFS알고리즘에 대해 잘 모르는 상태로 만들었었습니다.
+
+BFS알고리즘을 이용해서 각 몬스터들과의 관계를 전부 정리한 후(그래프화 시켜서) 뽑아쓰는게 훨씬 좋았을 것 같습니다.
+
+지금에서 코드를 짠다면 <거리,몬스터> pair객체를 만들고, PriorityQueue에 저장 후 정렬방식을 거리순으로 조절한 후  
+
+앞에서부터 꺼내어서 쓰는 방식을 이용할 것 같습니다. 거리는 따로 저장하고있으며, 다른 오브젝트에서 거리가 더 가깝다면 연결을 바꾸는 방식을 충분히 이용할 수 있었을 것 같습니다. (계층별 순회를 정확하게 나누면 가능할 것 같습니다)
 
