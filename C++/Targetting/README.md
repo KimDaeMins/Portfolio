@@ -12,7 +12,9 @@
 
 ## 설명
 
-  몬스터의 매 프레임마다 플레이어와의 거리를 저장한 후 플레이어의 Targgetting시 몬스터를 순회하여 가장 가까운 몬스터를 찾고 저장하는 방식입니
+  몬스터의 매 프레임마다 플레이어와의 거리를 저장한 후 플레이어의 Targgetting시 몬스터를 순회하여 가장 가까운 몬스터를 찾고 저장하는 방식입니다.
+
+  구현위치 - Monster.cpp Line[276-292], Player.cpp Line[975-1073]
 
 ### 몬스터를 바라보는 방식
 
@@ -31,6 +33,8 @@
     2-3. 2-1에서 구한 LookVector와 2-2에서 구한 RightVector를 외적하여 UpVector를 구합니다.
 
     2-4. 각각 구한 Right, Up, Look을 내 WorldMatrix행렬에 적용합니다.
+
+    구현위치 - Transform.cpp Line[500-530]
 
 ## 개선사항
 
