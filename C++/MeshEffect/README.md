@@ -7,7 +7,7 @@
 
 ## 핵심 코드
 
-<img width="1445" alt="11-1 1" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/1b11fa8a-262a-44ad-b05c-e23a2a611ef7">
+<img width="588" alt="11-1p" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/f3d6d35d-2cf4-4316-a3a7-fc5905fe3642">
 
 Tick(Update)마다 특정 상태값에 따라 크기를 조절하거나 이동을 하는 방식으로 구현했습니다.
 
