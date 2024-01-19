@@ -54,13 +54,13 @@ map계층구조를 순회하며 탐색합니다.
 
     3-4. 가장 가까운 오브젝트가 이미 저장된 오브젝트이면 변경된 오브젝트 기준 저장된 오브젝트들과 전부 비교하여 거리계산 후 교체하는 작업을 진행합니다. 
 
-  구현위치 IceDaggerLightnign.cpp Line[345-494]
+    구현위치 IceDaggerLightnign.cpp Line[345-494]
 
   #### 4. 마지막으로 저장된 map을 순회하여 연결된 번개를 꽃습니다.
 
-4-1. 처음 맞은 적을 저장했기떄문에 처음맞은적을 Key로 Value를 찾고 Value에 들어있는 3몬스터를 또 Key값으로 Value를 찾는 방식을 계속 반복합니다.
+    4-1. 처음 맞은 적을 저장했기떄문에 처음맞은적을 Key로 Value를 찾고 Value에 들어있는 3몬스터를 또 Key값으로 Value를 찾는 방식을 계속 반복합니다.
 
- 구현위치 IceDaggerLightnign.cpp Line[234-266]
+    구현위치 IceDaggerLightnign.cpp Line[234-266]
 
 ## 개선사항
 
