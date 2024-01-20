@@ -20,7 +20,7 @@
 
 정리된 데이터에 따라 아래 코드를 실행합니다.
 
-<img width="472" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/9ab4a913-dd86-4a25-9f95-f3e0ccb8cc71">
+<img width="754" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/e4458be6-f3dd-4316-a875-e778e82aac49">
 
 초록색 : 오브젝트의 연결 기준 뼈를 정합니다.
 
