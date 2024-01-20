@@ -21,21 +21,33 @@
 
 ### Drag의 과정
 
+#### 1. 몬스터의 뼈 -> 플레이어로의 Y축 회전량을 구합니다
+
+    1-1. 몬스터의 방향벡터(MyDir), 플레이어로의 방향벡터(ToTarget)의 Y값을 제거합니다
+
+    1-2. Y값이 제거된 MyDir과 ToTarget을 정규화 시킨 후 내적 합니다 (MyDir·ToTarget)
+
+    1-3. 결과값으로 나온 cosA값의 역코사인값을 가져옵니다 ( 라디안각이 추출됨 )
+
+    1-4. 뼈의 회전범위를 조절합니다.
+
+    1-5. 외적을 통해 좌우를 판단하여 회전각에 적용합니다. (MyDir X ToTarget 의 y값으로 비교)
+
 #### 1. 특정 애니메이션 프레임에서 방향을 정하고 레이캐스트를 쏘고 데이터를 정리합니다.
 
-  1-1. 오른손의 위치를 뽑기위해 PivotMatrix, WorldMatrix, 오른손의 BoneMatrix를 구합니다.
+    1-1. 오른손의 위치를 뽑기위해 PivotMatrix, WorldMatrix, 오른손의 BoneMatrix를 구합니다.
   
-  1-2. ((BoneMatrix  * PivotMatrix) * WorldMatrix).Translation으로 위치좌표를 가져옵니다.(Origin)
+    1-2. ((BoneMatrix  * PivotMatrix) * WorldMatrix).Translation으로 위치좌표를 가져옵니다.(Origin)
   
-  1-3. 타겟팅상태라면 타겟의 위치 - Origin을 Dir로 설정합니다.
+    1-3. 타겟팅상태라면 타겟의 위치 - Origin을 Dir로 설정합니다.
 
-  1-4. 타겟팅 상태가 아니라면 객체의 Look을 Dir로 설정합니다.(Transform.Get_State(Look));
+    1-4. 타겟팅 상태가 아니라면 객체의 Look을 Dir로 설정합니다.(Transform.Get_State(Look));
 
-  1-5. Origin과 Dir을 이용하여 레이캐스트를 쏜 후 결과를 Data에 정리합니다.
+    1-5. Origin과 Dir을 이용하여 레이캐스트를 쏜 후 결과를 Data에 정리합니다.
 
-  1-6. 정리한 데이터를 기반으로 드래그용 객체를 생성합니다.
+    1-6. 정리한 데이터를 기반으로 드래그용 객체를 생성합니다.
 
-  구현위치 - StateTetherWand.cpp Line[84-176]
+    구현위치 - StateTetherWand.cpp Line[84-176]
 
 
 #### 2. 드래그용 객체를 이용하여 당기거나 날아갑니다.
