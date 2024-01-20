@@ -22,7 +22,6 @@
 ## 과정
 
 #### 1. 특정 애니메이션 프레임에서 방향을 정하고 레이캐스트를 쏘고 데이터를 정리합니다.
-
   1-1. 오른손의 위치를 뽑기위해 PivotMatrix, WorldMatrix, 오른손의 BoneMatrix를 구합니다.
   
   1-2. ((BoneMatrix  * PivotMatrix) * WorldMatrix).Translation으로 위치좌표를 가져옵니다.(Origin)
@@ -38,7 +37,6 @@
   구현위치 - StateTetherWand.cpp Line[84-176]
 
 #### 2. 드래그용 객체를 이용하여 당기거나 날아갑니다.
-
   2-1. 1의 방식으로 플레이어 오른손의 위치를 가져온 후 드래그객체의 위치에 적용시킵니다.
 
   2-2. 회전은 정확성을 위하여 생성시 인자로 받았던 Dir을 바라보게 조절합니다.
