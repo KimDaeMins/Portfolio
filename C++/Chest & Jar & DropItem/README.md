@@ -1,105 +1,80 @@
-# Control & Transformation Matrix
+# Chest
 
-## 애니메이션 상으로는 조절되지 않은 뼈의 추가적인 회전 및 이동
+## 아이템의 종류에 따라 골드 또는 아이템이 나타납니다.
 
-<img width="232" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/23e31200-c1a8-49cf-b4b9-15561b6c6914">
+<img width="104" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/c72e475c-7398-4c22-b497-e1b9d4d32159">
 
+골드가 나타나는 모습
+
+<img width="386" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/793e92eb-8bf0-4311-9676-681ed4ca28ea">
+
+아이템이 나타나는 모습
 
 ## 핵심 코드
 
-<img width="791" alt="8-1" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/77ed9525-1f98-434a-867e-0b53a07ef490">
+<img width="610" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/cd76dc07-da73-4f17-951c-c4f02bfd5c0e">
 
-## 설명
+플레이어는 상자의 상호작용위치와 충돌했다면 상자오픈 상태로 변경합니다.(이 상태에선 플레이어의 애니메이션이 변경됩니다)
 
-  부모의 TransformationMatrix 를 적용하는 Update_CombinedTransformationMatrix() 함수에서
+<img width="626" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/349da563-a5b5-4b73-964c-be69fb8e602b">
 
-  회전값과 이동값의 매트릭스를 추가로 곱해주어 적용합니다. ( m_ControllMatrix, m_ControllTranslationMatrix)
+플레이어의 애니메이션 인덱스를 판단하여 상자를 여는 애니메이션이라면 애니메이션을 같이 바꾸어줍니다.
 
-### 회전값과 이동값 매트릭스를 나눈 이유
+<img width="405" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/ea5e0c81-156f-4f7c-8364-431a68bd644b">
 
-  매트릭스의 곱을 적용할 때 크기 -> 자전 -> 이동 -> 공전 -> 부모 의 순으로 곱해주어야 합니다.(행렬의 곱은 역이 성립하지 않기 떄문에)
+골드일시 Coin을 좀 더 다양하게 (파랑보석, 보라보석, 금화) 나타내기 위하여 랜덤성을 만들어서 CoinTable을 생성합니다.
 
-  이 규칙을 어기고 이동을 한 후 크기조절 매트릭스를 곱하면 이동거리가 크기조절 매트릭스의 크기만큼 커지게 되는 현상들을 볼 수 있습니다.  
+Coin의 종류마다 돈이 다르기때문에 가격을 조절하기위하여 각 Coin 의 종류마다 최댓값을 들고있으며 그 갯수를 넘길 순 없습니다.
 
-  이런 상황에서 정확한 추가 회전값과 이동값을 기존 TramsformationMatrix에 전달하려면 회전과 이동량을 따로 나누어서 전달해야한다고 판단했습니다.
+<img width="802" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/b9a019d1-3060-427c-b674-932ba07c31fd">
 
-  그래서 현재 Bone의 TransformationMatrix(회전 및 이동값이 들어있는 매트릭스) 의 앞에서 ControlMatrix(회전 행렬) 을 곱해주고 뒤에서 ControllTranslationMatrix(이동 행렬) 을 곱해주어 행렬 계산의 오차를 없앴습니다.
+코인테이블을 생성했다면 생성방향을 조절하여 360도로 Coin이 퍼트려서 한개씩 생성되게 구현합니다.(코인이 주르르륵 나오게 됩니다)
 
-  구현 위치 -  HierarchyNode.cpp - 40~76 Line
+<img width="873" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/f0f091b8-cd34-42a9-aa51-1547d89d3f5c">
 
-### 회전값의 적용 예시
+아이템일시 UI를 보여주며 인벤토리에 직접 아이템을 생성하여 넣어줍니다. 
 
-<img width="234" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/29c09d03-fb16-4f43-9305-a2d4b9a97d12">
+구현위치 chest.cpp Line[67-171], specialChest.cpp Line[71-174]
 
-  플레이어를 바라보는 보스몬스터의 머리
+### 개선사항
 
-<img width="662" alt="8-2" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/d4f3c328-b5ae-4f74-9f2f-78783f54a3d3">
+아이템 상자와 골드상자의 클래스가 각각 다릅니다. 어떻게보면 같은 작동을 하고있는데도 말입니다. 이부분은 하나로 묶는것이 조금 더 현명한 방법이 아닐까 싶은데, 하나로 묶는다면 인자를 넣는 방식을 조절해야해서 고민을 굉장히 많이 했었습니다.
 
-#### 1. 몬스터의 뼈 -> 플레이어로의 Y축 회전량을 구합니다
+결국 클래스를 나누는게 제작단계에선 조금 더 편하다고 생각했지만 같은 애니메이션을 하고 생김새나 Collider가 전부 같고 비슷한 코드가 많은점이 거슬렸습니다. 아마 다음에 만들면 이런부분에선 합친 후 파싱단계에서 조절하지않을까 싶습니다.
 
-    1-1. 몬스터의 방향벡터(MyDir), 플레이어로의 방향벡터(ToTarget)의 Y값을 제거합니다
 
-    1-2. Y값이 제거된 MyDir과 ToTarget을 정규화 시킨 후 내적 합니다 (MyDir·ToTarget)
+# Coin
 
-    1-3. 결과값으로 나온 cosA값의 역코사인값을 가져옵니다 ( 라디안각이 추출됨 )
+## 땅과의 충돌횟수를 저장하여 통통 튕긴 후 플레이어를 향해 빨려오는 방식을 구현했습니다.
 
-    1-4. 뼈의 회전범위를 조절합니다.
+<img width="229" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/59432845-b56a-414b-9ae1-4c60e96b0aac">
 
-    1-5. 외적을 통해 좌우를 판단하여 회전각에 적용합니다. (MyDir X ToTarget 의 y값으로 비교)
+## 핵심 코드
 
-#### 2. 몬스터의 뼈 -> 플레이어로의 X축 회전량을 구합니다
+<img width="501" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/c968c105-8a91-4788-acb4-cc6170430a80">
 
-    2-1. 1-1에서 구한 ToTarget의 Y값을 제거한 Vector와 ToTarget을 정규화시킨 후 내적합니다 (ZeroYToTarget·ToTarget)
+땅과의 충돌횟수를 판단합니다 (Stay충돌을 판단한 이유는 Enter로 판단하면서 Force를 높게 주지 않은 경우 통통 튀는 현상이 줄어 바닥과의 충돌판정을 여러번 확인할 수 없기 때문입니다.)
 
-    2-2. 플레이어의 현재 위치와 뼈의 위치를 비교하여 상하를 판단하여 회전각에 적용합니다
+땅과 일정 이상 충돌되었다면 플레이어 흡수 판단 영역을 생성합니다.
 
-#### 3. 회전 매트릭스를 만든 후 컨트롤매트릭스에 적용합니다.
+<img width="786" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/1be3b5c9-37b4-40cc-9856-8fec918bb049">
 
-    3-1. 회전할 뼈의 매트릭스의 회전값의 역행렬을 구합니다. (원점에서 회전하기 위함)
-  
-    3-2. 1, 2에서 구한 회전값으로 회전매트릭스를 만듭니다.
-  
-    3-3. 회전 오차를 조절하기위하여 싱크매트릭스를 만듭니다.
+플레이어가 흡수 판단 영역 내에 들어간다면 모든 물리적 충돌을 제거한 후 플레이어의 위치로 이동시킵니다.
 
-    3-4. 3-2 * 3-3 * 3-1 의 값을 컨트롤 매트릭스에 적용합니다.
+후에 플레이어와의 거리로 판단하여 Coin의 종류에 따라 플레이어의 돈을 증가시키며 사운드를 재생합니다.
 
-    구현위치 - SpiderTank_Idle.cpp 61~115
+구현위치 - Coin.cpp Line[88-158]
 
-## 회전값 적용 개선사항
+# DropItem
 
-    Unity를 배우며 이 방법이 아닌 쿼터니언을 사용했다면 훨씬 쉽고 빠른 코드가 되지않았을까 싶습니다.
+## 플레이어를 따라가기 전 WaitTime을 설정하여 일정 시간 뒤 플레이어에게 흡수되도록 구현했습니다.
 
-    보스의 회전에서 보스to플레이어까지의 회전을 그냥 적용시키면 되는 부분을 돌아서 갔다고 생각하는데,
+<img width="259" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/2c81934b-7ab9-4f8f-a37b-8bafd3f7c13f">
 
-    그래도 얻어간 점이라면 행렬에 대한 이해를 확실히 했다고 생각합니다.
-  
-### 이동값의 적용 예시
+## 핵심 코드
 
-<img width="232" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/051233e9-d9b3-467a-b78d-88e13fa2aa67">
+<img width="439" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/71e59ec1-f64e-4106-896b-1a2943c6fc68">
 
-    뼈의 길이를 플레이어에게까지 늘려 혓바닥 갈고리가 플레이어에게 닿는 모습
-    
-<img width="635" alt="8-3p" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/0b83804d-0ae9-4b9f-ad16-1fcbfe01b9ff">
+플레이어를 향해 날아가는 방식은 Coin과 같고 DropItem의 속성에 따라 Trail을 적용하거나 이미지가 다른 점 정도의 차이가 있습니다.
 
-#### 1. 몬스터를 플레이어 방향으로 회전합니다.
-    
-    1-1. 플레이어 - 몬스터 -> 플레이어로의 방향(dir)
-
-    1-2. dir벡터에 맞춰서 Look, Right, Up 벡터를 설정 후 회전행렬을 구성합니다
-
-#### 2. 플레이어와의 거리 - 최대거리의 크기를 구한 후 1초당 이동량을 구합니다
-
-    2-1. 이미 회전을 시킨 상태이니 z축 양의방향을 바라보는 상태에서 애니메이션상 
-    
-    뼈의 최대 길이를 뺀 값(고정값 6)을 구합니다. -> 애니메이션에서 뼈가 살짝 늘어나는 부분떄문에 오차를 구했습니다.
-
-    2-2. (플레이어 위치 - 애니메이션상 뼈가 제일 늘어났을때의 위치) 의 길이만큼 z축 양의방향으로 늘린 벡터를 만듭니다.
-
-    2-3. 애니메이션에 따라 서서히 증가해야하기때문에 속도값과 Duration을 구해서 한 Tick당 이동량을 구합니다.
-
-#### 3. 특정 뼈의 ControlTranslationMatrix에 적용합니다
-
-    3-1. 2-3 에서 구한 Tick당 이동량을 Update에서 m_ControlTranslationMatix에 적용합니다.
-
-     구현위치 - FrogTongueInit.cpp 61~115
-
+DropItem의 회전하는 모습을 좀 더 보여주고 싶다는 생각과 Coin만큼 통통튀는 모습은 그닥 이쁘지 않다는 판단하에 Coin과는 다른 방식을 이용했습니다.
