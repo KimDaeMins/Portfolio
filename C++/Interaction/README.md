@@ -6,7 +6,7 @@
 
 우물 앞에서 상호작용 버튼이 활성화되는 모습
 
-<img width="87" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/33f17d51-9b22-4d11-a00e-b3df1ec1f02c">
+<img width="311" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/65d1464b-247e-45d0-bb70-0b46185de78a">
 
 상호작용 방식에 따라 우물에 동전을 집어넣는 모습 ( 아이템의 금화를 사용하면 위의 애니메이션이 진행되고 , 단순 스페이스바를 누르면 몇개의 금화를 넣었는지 UI로 나타납니다 )
 
