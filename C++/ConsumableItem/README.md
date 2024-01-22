@@ -2,8 +2,9 @@
 
 ## 소모성 아이템의 종류에 따른 아이템 사용 효과 및 애니메이션 변경을 구현했습니다.
 
-<img width="232" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/23e31200-c1a8-49cf-b4b9-15561b6c6914">
+<img width="398" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/6ec31bac-f80d-46ef-a788-0d8a3857e5e8">
 
+폭죽 아이템을 던지는 모습입니다.
 
 ## 핵심 코드
 
@@ -11,9 +12,13 @@
 
 아이템 타입에 따라 사용하는 방법(애니메이션의 모습)이 바뀌는 점을 구분하기 위하여 생성단계에서 사용방법을 미리 정의합니다.
 
+구현위치 - ConsumableItem.cpp Line[28-48]
+
 <img width="513" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/09a667ea-282f-4532-ae74-c432db28a29c">
 
 MotionChangerState에서 위에서 정의한 UsingType을 받아와 각 UsingType에 맞춰 플레이어의 애니메이션을 변경합니다.
+
+구현위치 - StateItemMotionChange.cpp Line[139-168]
 
 <img width="916" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/234df751-ec13-49a6-b542-0b33a32f1278">
 
@@ -23,6 +28,7 @@ MotionChangerState에서 위에서 정의한 UsingType을 받아와 각 UsingTyp
 
 아이템 갯수의 변화에 따라 UI또한 업데이트 해줍니다.
 
+구현위치 - Inventory.cpp Line[563-596]
 
 ### ThrowedItem
 
@@ -53,3 +59,5 @@ MotionChangerState에서 위에서 정의한 UsingType을 받아와 각 UsingTyp
 먹는 형식의 아이템은 각각 아이템의 종류에 따라 체력이나 마나를 증가시키는 방식을 이용하였고, 최대체력,마력을 넘기지 못하도록 제한했습니다.
 
 최대체력을 단순히 증가시키는것이 아닌 작은 30분의 1의 값을 프레임마다 증가시키게 설정하여 체력바가 서서히 늘어나는 모습을 구현했습니다.
+
+구현위치 - StateEatting.cpp Line[70-105]
