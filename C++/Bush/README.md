@@ -1,9 +1,10 @@
-# Control & Transformation Matrix
+# Bush
 
-## 애니메이션 상으로는 조절되지 않은 뼈의 추가적인 회전 및 이동
+## 플레이어 속도에 따른 고정객체의 기울기 및 특정 필터충돌에 맞춰 나무가 잘리는 현상을 구현했습니다.
 
-<img width="232" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/23e31200-c1a8-49cf-b4b9-15561b6c6914">
+<img width="230" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/3804f27f-7a88-4700-a340-b4b575f4dbf0">
 
+<img width="152" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/71270e15-6989-4102-bda4-84e225e88701">
 
 ## 핵심 코드
 
