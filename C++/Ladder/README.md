@@ -22,7 +22,7 @@
 
 <img width="264" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/21fd1332-8291-4ed7-a645-8a0e5711a433">
 
-사다리를 움직이는 애니메이션이 있는데, 버튼을 누르지 않을때는 애니메이션이 진행되지않도록 Pause_Animation함수를 불러줍니다.
+사다리에서 상하로 움직이는 애니메이션이 있는데, 버튼을 누르지 않을때는 애니메이션이 진행되지않도록 Pause_Animation함수를 불러줍니다.
 
 구현위치 - StateLadder.cpp Line[164-167]
 
