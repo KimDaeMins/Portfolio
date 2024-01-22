@@ -2,8 +2,9 @@
 
 ## 소모성 아이템의 종류에 따른 아이템 사용 효과 및 애니메이션 변경을 구현했습니다.
 
-<img width="232" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/23e31200-c1a8-49cf-b4b9-15561b6c6914">
+<img width="398" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/6ec31bac-f80d-46ef-a788-0d8a3857e5e8">
 
+폭죽 아이템을 던지는 모습입니다.
 
 ## 핵심 코드
 
@@ -27,6 +28,7 @@ MotionChangerState에서 위에서 정의한 UsingType을 받아와 각 UsingTyp
 
 아이템 갯수의 변화에 따라 UI또한 업데이트 해줍니다.
 
+구현위치 - Inventory.cpp Line[563-596]
 
 ### ThrowedItem
 
