@@ -1,103 +1,56 @@
-# Control & Transformation Matrix
+# Shield
 
-## 애니메이션 상으로는 조절되지 않은 뼈의 추가적인 회전 및 이동
+## 귀속 아이템, 방패 전투 매커니즘, 패링을 구현했습니다.
 
-<img width="232" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/23e31200-c1a8-49cf-b4b9-15561b6c6914">
-
+<img width="392" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/51823573-d842-4221-a417-e561691323f4">
 
 ## 핵심 코드
 
-<img width="791" alt="8-1" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/77ed9525-1f98-434a-867e-0b53a07ef490">
+<img width="756" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/1d8de54c-e452-49dc-9199-d39a84948286">
 
-## 설명
+최초 생성시 플레이어 왼쪽 손의 Bone을 가져와서 변수로 들고있습니다.
 
-  부모의 TransformationMatrix 를 적용하는 Update_CombinedTransformationMatrix() 함수에서
+구현위치 - Shield.cpp Line[165-186]
 
-  회전값과 이동값의 매트릭스를 추가로 곱해주어 적용합니다. ( m_ControllMatrix, m_ControllTranslationMatrix)
+<img width="284" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/c58a87b1-d93d-4137-be1c-d709ba07b5f1">
 
-### 회전값과 이동값 매트릭스를 나눈 이유
+플레이어 랜더링의 마지막단계에서 마지막으로 사용한 아이템(오른손) 과 방패(왼손) 및 화관(모자) 을 랜더링 하는 작업을 합니다.
 
-  매트릭스의 곱을 적용할 때 크기 -> 자전 -> 이동 -> 공전 -> 부모 의 순으로 곱해주어야 합니다.(행렬의 곱은 역이 성립하지 않기 떄문에)
+-> 플레이어 랜더링 단계에서 플레이어의 뼈의 정확한 위치가 업데이트되고 그곳에 제대로 랜더링하기위해 인벤토리 아이템들은 플레이어가 랜더링하도록 조절했습니다.
 
-  이 규칙을 어기고 이동을 한 후 크기조절 매트릭스를 곱하면 이동거리가 크기조절 매트릭스의 크기만큼 커지게 되는 현상들을 볼 수 있습니다.  
+<img width="516" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/b44a217b-84be-4cca-ac51-5dd2d27af41a">
 
-  이런 상황에서 정확한 추가 회전값과 이동값을 기존 TramsformationMatrix에 전달하려면 회전과 이동량을 따로 나누어서 전달해야한다고 판단했습니다.
+위에서 가져온 플레이어의 뼈정보 및 월드정보를 랜더링단계에서 조절합니다.
 
-  그래서 현재 Bone의 TransformationMatrix(회전 및 이동값이 들어있는 매트릭스) 의 앞에서 ControlMatrix(회전 행렬) 을 곱해주고 뒤에서 ControllTranslationMatrix(이동 행렬) 을 곱해주어 행렬 계산의 오차를 없앴습니다.
+이쪽에서 실질적으로 방패의 트랜스폼이 움직이니 방패 Collider또한 랜더링단계에 맞춰서 이동합니다.
 
-  구현 위치 -  HierarchyNode.cpp - 40~76 Line
+역할상의 문제가 있긴 하지만 보다 깔끔한 작동을 위하여 이렇게 만들었습니다. 그럼에도 역할상의 문제는 중요하다고 생각하기에 다음에 만들때는 업데이트단계로 조절할 듯 합니다.
 
-### 회전값의 적용 예시
+구현위치 - Shield.cpp Line[85-91]
 
-<img width="234" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/29c09d03-fb16-4f43-9305-a2d4b9a97d12">
+<img width="581" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/eb7b1dfe-0c43-45da-932c-bd76e68200c1">
 
-  플레이어를 바라보는 보스몬스터의 머리
+쉴드는 인벤토리의 Geer에서 쉴드가 존재하는지, 플레이어의 스테미너가 일정량 이상인지를 판단 후 전환됩니다.
 
-<img width="662" alt="8-2" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/d4f3c328-b5ae-4f74-9f2f-78783f54a3d3">
+구현위치 - StateIdle.cpp Line[143-147]
 
-#### 1. 몬스터의 뼈 -> 플레이어로의 Y축 회전량을 구합니다
+<img width="831" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/e2ac0a32-ab8c-4903-a3c7-ebb380f3e0d2">
 
-    1-1. 몬스터의 방향벡터(MyDir), 플레이어로의 방향벡터(ToTarget)의 Y값을 제거합니다
+쉴드를 들고있는 상태에서 양 다리Bone을 가져와 ControllMatrix를 일정각도 왕복하도록 조절하여 방패를 들고 천천히 걷는 모션을 구현했습니다.
 
-    1-2. Y값이 제거된 MyDir과 ToTarget을 정규화 시킨 후 내적 합니다 (MyDir·ToTarget)
+구현위치 - StateShield.cpp Line[132-210]
 
-    1-3. 결과값으로 나온 cosA값의 역코사인값을 가져옵니다 ( 라디안각이 추출됨 )
+<img width="457" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/1607a835-7add-4baa-9be0-a880e69c9b7d">
 
-    1-4. 뼈의 회전범위를 조절합니다.
+쉴드를 든 상태에서 시간을 체크한 후 키를 빠르게 떼었다면 패링상태로 전환합니다.
 
-    1-5. 외적을 통해 좌우를 판단하여 회전각에 적용합니다. (MyDir X ToTarget 의 y값으로 비교)
+구현위치 - StateShield.cpp Line[91-103]
 
-#### 2. 몬스터의 뼈 -> 플레이어로의 X축 회전량을 구합니다
+<img width="569" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/108837cb-98a0-4dcd-8d80-f0fa390a2b08">
 
-    2-1. 1-1에서 구한 ToTarget의 Y값을 제거한 Vector와 ToTarget을 정규화시킨 후 내적합니다 (ZeroYToTarget·ToTarget)
+패링 애니메이션의 특정 구간에서만 패링이 가능하게 조절하며, 쉴드 Collider의 속성을 잠시동안 변경하는 방식을 이용합니다.
 
-    2-2. 플레이어의 현재 위치와 뼈의 위치를 비교하여 상하를 판단하여 회전각에 적용합니다
-
-#### 3. 회전 매트릭스를 만든 후 컨트롤매트릭스에 적용합니다.
-
-    3-1. 회전할 뼈의 매트릭스의 회전값의 역행렬을 구합니다. (원점에서 회전하기 위함)
-  
-    3-2. 1, 2에서 구한 회전값으로 회전매트릭스를 만듭니다.
-  
-    3-3. 회전 오차를 조절하기위하여 싱크매트릭스를 만듭니다.
-
-    3-4. 3-2 * 3-3 * 3-1 의 값을 컨트롤 매트릭스에 적용합니다.
-
-    구현위치 - SpiderTank_Idle.cpp 61~115
-
-## 회전값 적용 개선사항
-
-    Unity를 배우며 이 방법이 아닌 쿼터니언을 사용했다면 훨씬 쉽고 빠른 코드가 되지않았을까 싶습니다.
-
-    보스의 회전에서 보스to플레이어까지의 회전을 그냥 적용시키면 되는 부분을 돌아서 갔다고 생각하는데,
-
-    그래도 얻어간 점이라면 행렬에 대한 이해를 확실히 했다고 생각합니다.
-  
-### 이동값의 적용 예시
-
-<img width="232" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/051233e9-d9b3-467a-b78d-88e13fa2aa67">
-
-    뼈의 길이를 플레이어에게까지 늘려 혓바닥 갈고리가 플레이어에게 닿는 모습
-    
-<img width="635" alt="8-3p" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/0b83804d-0ae9-4b9f-ad16-1fcbfe01b9ff">
-
-#### 1. 몬스터를 플레이어 방향으로 회전합니다.
-    
-    1-1. 플레이어 - 몬스터 -> 플레이어로의 방향(dir)
-
-    1-2. dir벡터에 맞춰서 Look, Right, Up 벡터를 설정 후 회전행렬을 구성합니다
-
-#### 2. 플레이어와의 거리 - 최대거리의 크기를 구한 후 1초당 이동량을 구합니다
-
-    2-1. 이미 회전을 시킨 상태이니 z축 양의방향을 바라보는 상태에서 애니메이션상 
-    
-    뼈의 최대 길이를 뺀 값(고정값 6)을 구합니다. -> 애니메이션에서 뼈가 살짝 늘어나는 부분떄문에 오차를 구했습니다.
-
-    2-2. (플레이어 위치 - 애니메이션상 뼈가 제일 늘어났을때의 위치) 의 길이만큼 z축 양의방향으로 늘린 벡터를 만듭니다.
-
-    2-3. 애니메이션에 따라 서서히 증가해야하기때문에 속도값과 Duration을 구해서 한 Tick당 이동량을 구합니다.
-
-#### 3. 특정 뼈의 ControlTranslationMatrix에 적용합니다
+구현위치 - StateParry.cpp Line[71-91]
 
     3-1. 2-3 에서 구한 Tick당 이동량을 Update에서 m_ControlTranslationMatix에 적용합니다.
 
