@@ -6,6 +6,8 @@
 
 뼈에 부착된 Collider의 경우 뼈의 정보를 가져와서 TransformMatrix를 재조정한 후 박스의 업데이트의 인자로 보냅니다.
 
+==============================================
+
 ## AABB Collision
 
 ### 업데이트
@@ -36,7 +38,7 @@ XMVectorGreater함수 이용 A박스의 Min값 > B박스의 Max값,  B박스의 
 
 AABB Collider를 회전값이 0인 OBBCollider로 판단하고 OBB to OBB 충돌검사를 진행합니다.
 
-
+==============================================
 
 ## OBB COllision
 
@@ -81,7 +83,7 @@ BoundingBox에 저장된 데이터를 이용하여 8개의 꼭짓점을 구합�
 각 Box의 최대길이가 Center사이의 길이보다 작은부분이 단 한개라도 존재한다면 충돌한 상태가 아닙니다.
 
 
-
+==============================================
 
 ## Sphere Collision
 
@@ -97,7 +99,7 @@ Center값은 최초로 저장한 Center값에 MAtrix를 곱하여 저장합니�
 
 그중 가장 큰 수의 sqrt값을 최초로 저장한 Radius에 저장하여 Matrix에서 가장 큰 Scale을 가진 녀석을 기준으로 Radius를 조절합니다.
 
-### 충돌
+### 충돌처리
 
 #### Sphere to Sphere Collision
 
