@@ -8,6 +8,8 @@
 
 ## AABB Collision
 
+### 업데이트
+
 <img width="697" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/9e825af8-31f1-46eb-8053-d39d232dbb03">
 
 업데이트 과정입니다. 인자로 받은 Matrix의 회전값을 제거한 후 최초로 저장한 Center값과 Extents값을 가져옵니다.
@@ -18,7 +20,9 @@ XMVectorTransform을 이용하여 각 꼭짓점의 좌표값을 비교하여 최
 
 Radius는 충돌 최적화를 위하여 충돌범위를 Extents값을 이용해 임의로 설정했습니다.
 
-### AABB to AABB 충돌검사
+### 충돌처리
+
+#### AABB to AABB Collision
 
 <img width="746" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/11d543e4-73c3-4a34-a25d-11eafdc84b68">
 
@@ -28,11 +32,15 @@ XMVectorGreater함수 이용 A박스의 Min값 > B박스의 Max값,  B박스의 
 
 -> 한 박스의 최솟값좌표가 다른 박스의 최댓값좌표보다 크다면 충돌상태가 아닙니다.
 
-### AABB to OBB 충돌 검사
+#### AABB to OBB Collision
 
 AABB Collider를 회전값이 0인 OBBCollider로 판단하고 OBB to OBB 충돌검사를 진행합니다.
 
+
+
 ## OBB COllision
+
+### 업데이트
 
 <img width="669" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/a2750dea-7c99-430b-9b17-df25d582a898">
 
@@ -46,7 +54,9 @@ Matrix에서 크기값을 추출한 후 Extents에 적용합니다.
 
 Radius는 AABB와 같이 충돌 최적화를 위하여 충돌범위를 Extents값을 이용해 임의로 설정했습니다.
 
-### OBB to OBB Collision
+### 충돌처리
+
+#### OBB to OBB Collision
 
 ![14](https://github.com/KimDaeMins/Portfolio/assets/68540137/71d56afe-4caf-4f1e-af71-3340e435c8a8)
 
@@ -70,11 +80,16 @@ BoundingBox에 저장된 데이터를 이용하여 8개의 꼭짓점을 구합�
 
 각 Box의 최대길이가 Center사이의 길이보다 작은부분이 단 한개라도 존재한다면 충돌한 상태가 아닙니다.
 
+
+
+
 ## Sphere Collision
+
+### 업데이트
 
 <img width="444" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/1c9ebb0d-d90f-413e-b942-49cdcdcdd811">
 
-업데이트 과정입니다. Matrix를 인자로 받으며 최초로 저장한 Center값과 Radius값을 가져옵니다.
+Matrix를 인자로 받으며 최초로 저장한 Center값과 Radius값을 가져옵니다.
 
 Center값은 최초로 저장한 Center값에 MAtrix를 곱하여 저장합니다.
 
@@ -82,7 +97,9 @@ Center값은 최초로 저장한 Center값에 MAtrix를 곱하여 저장합니�
 
 그중 가장 큰 수의 sqrt값을 최초로 저장한 Radius에 저장하여 Matrix에서 가장 큰 Scale을 가진 녀석을 기준으로 Radius를 조절합니다.
 
-### Sphere Collision
+### 충돌
+
+#### Sphere to Sphere Collision
 
 <img width="538" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/c3b5468e-d51f-464c-8f17-0307d11fb92b">
 
@@ -91,6 +108,8 @@ Center값은 최초로 저장한 Center값에 MAtrix를 곱하여 저장합니�
 Center - Center의 길이의 제곱과 Radius + Radius의 길이의 제곱을 계산하여 앞의값이 더 크다면 충돌하지 않은것이고 뒤의값이 더 크다면 충돌취급합니다.
 
 길이를 구하는 과정에서 sqrt연산을 둘 다 해야하는 과정을 줄이기 위하여 제곱끼리의 계산으로만 사용했습니다.
+
+#### AniBox to Sphere Collision
 
 OBB박스, AABB박스와의 충돌은 DirectX Library에 구현되어있는 Box Collision함수를 가져와 직접 구현한 BoundingBox로 계산이 가능하도록 리팩토링 했습니다
 
