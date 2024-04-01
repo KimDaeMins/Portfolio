@@ -12,6 +12,8 @@
 
 최초 mesh 를 불러올 때 각 vertex별로 존재하는 Normal값, Tangent값, Position값, UV을 저장합니다.
 
+구현위치 - MeshContainer.cpp Line[118~131]
+
 ![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/2b06ff76-a8e5-4ecb-83cd-b02a1c729f9a)
 
 랜더링시 각각 부위에 할당된 Texture(Normal, Diffuse)를 바인합니다.
