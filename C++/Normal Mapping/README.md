@@ -8,22 +8,27 @@
 
 ## 코드 진행
 
+#### 1. Mesh정보 저장
+
 ![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/aa5fc50b-bb03-4402-b89c-0bf9f54b69d9)
 
 최초 mesh 를 불러올 때 각 vertex별로 존재하는 Normal값, Tangent값, Position값, UV을 저장합니다.
 
 구현위치 - MeshContainer.cpp Line[118~131]
 
+#### 2. 바인딩 작업
+
 ![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/2b06ff76-a8e5-4ecb-83cd-b02a1c729f9a)
 
 랜더링시 각각 부위에 할당된 Texture(Normal, Diffuse)를 바인딩합니다.
-
 
 ![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/af45eaa6-221c-497d-ad3b-68580c5a0712)
 
 현재 객체의 World Matrix와 카메라의 ViewMatrix , ProjMatrix를 바인딩합니다
 
 구현위치 - BossOgre.cpp Line[555~575]
+
+#### 3. NormalTexture적용
 
 ![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/a3241c07-ee3d-42bc-96e0-7695b72b6842)
 
@@ -41,9 +46,7 @@ VertexShader 단계에서 구한 Tangent Binormal Normal값을 각각 Right Up L
 
 이미지상 Normal과 월드에있는 Vertex의 Normal을 곱하여 월드상 한 픽셀의 Normal값을 구합니다.
 
-구한 정보를 Light연산을 위하여 0~1값으로 재조정 후 그립니다.
-
-구현위치 - SHader_Mesh.hlsl Line[125~140]
+구한 정보를 Light연산을 위하여 0~1값으로 재조정 후 그립산
 
 ![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/fe5284d4-4c61-4542-a0a5-252c33fe9d40)
 
