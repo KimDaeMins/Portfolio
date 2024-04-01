@@ -29,6 +29,8 @@ map unmap을 통하여 버텍스와 인덱스를 게임 진행중 변경이 가�
 
  랜더링시 나중에 생성된것부터 먼저 Vertex를 구성하고, 삭제는 처음 생성된 녀석이 삭제되어야해서 양쪽이 뚫려있는 deque컨테이너를 이용했습니다.
 
+ 구현위치 - CVIBuffer_Trail.cpp Line[111~111]
+ 
 ### Vertex구성 및 스플라인 곡선 생성
 
 ![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/050525a0-94a7-4aad-a73c-c4fc36473d16)
