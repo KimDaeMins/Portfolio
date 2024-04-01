@@ -18,6 +18,8 @@
 
 MRT는 멀티랜더타겟의 약자로 랜더타겟을 여러개 두어서 한번에 다수의 텍스쳐에 그릴 수 있도록 구성했습니다.
 
+구현위치 - Target_Manager.cpp Line[36~54] RenderTarget.cpp Line[8~51]
+
 #### 2. 랜더타겟 적용
 
 ![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/b766ef4a-2e3c-4d06-9b25-dcccca6b3a23)
@@ -34,11 +36,15 @@ MRT는 멀티랜더타겟의 약자로 랜더타겟을 여러개 두어서 한�
 
 -> 이후 랜더링시에는 픽셀셰이더에서 지정한 Out으로 텍스쳐에 각각 그려지게됩니다.
 
+구현위치 - Target_Manager.cpp Line[56~87]
+
 #### 3. 복구
 
 ![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/56ebd76f-84bf-4b84-b4b9-e56ea98dd4e1)
 
 셰이더 리소스 뷰를 다시 초기화 한 후 랜더타겟 적용시 멤버변수로 보관했던 BackBufferView와 DepthStencilView를 이용해 랜더타겟을 다시 변경합니다.
+
+구현위치 - Target_Manager.cpp Line[89~101]
 
 #### 4. 사용
 
@@ -46,6 +52,7 @@ MRT는 멀티랜더타겟의 약자로 랜더타겟을 여러개 두어서 한�
 
 그려진 텍스쳐들은 셰이더리소스뷰를 통해서 셰이더에 Texture2D형태로 보내지고 셰이더 내에서 UV값을 통해 사용할 수 있습니다
 
+구현위치 - Renderer.cpp Line[315~317]
 
 
 ## 랜더링 순서
@@ -90,11 +97,15 @@ MRT는 멀티랜더타겟의 약자로 랜더타겟을 여러개 두어서 한�
 
 알파블랜딩시에는 주의할점이 있는데 알파블랜딩도 결국엔 그리는것이기 때문에 z값을 저장하고, z값을 저장하게 된다면 뒤쪽에 있는 물체가 그려지지 않게 됩니다. 여기에서 두가지 해결방안이 있습니다.
 
+구현위치 - Shader_Defines.hpp Line[23~42]
+
 ### 1. z값을 저장하거나 판단하지 않는다.
 
 ![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/3a82ec46-e1cb-49d4-8f5f-a1cbee68c1f5)
 
 셰이더에서 Pass 를 정의할 때 DepthStencilState를 zRead와 zWrite전부 하지 않도록 설정하면 깊이값에 따른 보정이 일어나지 않습니다.
+
+구현위치 - Shader_Defines.hpp Line[69~74]
 
 ### 2. z값에 따른 Sorting을 한다.
 
@@ -106,3 +117,4 @@ MRT는 멀티랜더타겟의 약자로 랜더타겟을 여러개 두어서 한�
 
 sorting은 리스트 컨테이너 내부 함수인 sort와 람다식을 이용하여 구현했습니다.
 
+구현위치 - Renderer.hpp Line[266~282]
