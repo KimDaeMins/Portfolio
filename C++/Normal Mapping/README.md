@@ -40,7 +40,7 @@
 
 ![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/34f15d46-d09f-4897-b177-48fa543d61d9)
 
-객체에서 랜더링시 저장한 NormalTexture의 값을 가져온 후 -1~1 범위로 변환합니다 (색으로 되어있어 0~1까지의 범위에서 *2 - 1을 해줍니다)
+객체에서 랜더링시 저장한 NormalTexture의 값을 가져온 후 -1~1 범위로 변환합니다 [색으로 되어있어 0~1까지의 범위에서 *2 - 1을 해줍니다]
 
 VertexShader 단계에서 구한 Tangent Binormal Normal값을 각각 Right Up Look 으로 가정하여 WorldMatrix를 구성합니다.
 
