@@ -22,7 +22,7 @@ contains, at을 이용하여 iter를 이용한 탐색이 아닌 바로 객체를
 
 ![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/bc0d2ecc-1682-4744-a52b-21d9c607856e)
 
-추가로 Range 기능을 이용하여 객체가 nullptr인지 여부를 판단후 아니라면 업데이트한다 라는 기능을 효과적으로 줄였습니다.
+추가로 Range 기능을 이용하여 객체가 nullptr인지 여부를 판단후 아니라면 업데이트한다 같은 조건부순회의 길이를 효과적으로 줄였습니다.
 
 ## 3. Collider, BoundingBox개선
 
