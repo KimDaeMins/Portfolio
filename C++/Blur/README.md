@@ -8,6 +8,8 @@
 
 ## 코드 진행
 
+#### 1. 가중치 설정
+
 ![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/d1d32074-96e3-4c5d-a991-a39919b20b65)
 
 블러처리를 위한 Weight값을 가중치 형식으로 설정한 후 가중치값을 정규화하여 블러처리를 조금 더 부드럽게 할 수 있도록 적용했습니다.
@@ -15,6 +17,8 @@
 화면 비율을 나누어 UV값의 최소단위를 미리 저장해두었습니다.
 
 구현위치 Renderer.cpp Line[112~135]
+
+#### 2. 오브젝트 랜더링
 
 ![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/6bac6281-bc90-4a55-b31a-82ba1f8b5940)
 
@@ -24,11 +28,15 @@
 
 구현위치 Player.cpp Line[215]
 
+#### 3. 다른 텍스쳐에 따로 블러처리될 부분을 랜더링
+
 ![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/726bd2c6-5004-468e-9730-60d20d908261)
 
 픽셀 셰이더 단계에서 다른(Emissive용) Texture에 그려둔 후 값이 존재하면 Diffuse의 색도 변환합니다.
 
 구현위치 Shader_AnimMesh.hlsl Line[147~177]
+
+#### 4. 가로 및 세로 블러처리
 
 ![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/5e392c3d-14a5-4693-b78c-7578198daa95)
 
@@ -49,6 +57,8 @@
 이 작업은 가로 블러처리와 세로블러처리가 같습니다.
 
 구현위치 Shader_Deffered.hlsl Line[242~356]
+
+#### 5. 최종 랜더링
 
 ![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/dc523507-7140-43b7-baad-b4e01127d92a)
 
