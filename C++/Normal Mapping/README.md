@@ -16,17 +16,22 @@
 
 ![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/2b06ff76-a8e5-4ecb-83cd-b02a1c729f9a)
 
-랜더링시 각각 부위에 할당된 Texture(Normal, Diffuse)를 바인합니다.
+랜더링시 각각 부위에 할당된 Texture(Normal, Diffuse)를 바인딩합니다.
+
 
 ![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/af45eaa6-221c-497d-ad3b-68580c5a0712)
 
 현재 객체의 World Matrix와 카메라의 ViewMatrix , ProjMatrix를 바인딩합니다
+
+구현위치 - BossOgre.cpp Line[555~575]
 
 ![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/a3241c07-ee3d-42bc-96e0-7695b72b6842)
 
 각 Vertex별로 저장된 값들과, 그릴 객체의 정보를 이용하여 월드스페이스에의 Vertex의 Tabgent, Normal를 구하고, 투영스페이스에서의 Position을 구합니다.
 
 또한 Vertex의 월드상 Normal값과(Look) Tangent값을(Right)  외적하여 BiNormal을(Up) 만듭니다.
+
+구현위치 - SHader_Mesh.hlsl Line[50~68]
 
 ![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/34f15d46-d09f-4897-b177-48fa543d61d9)
 
@@ -37,6 +42,8 @@ VertexShader 단계에서 구한 Tangent Binormal Normal값을 각각 Right Up L
 이미지상 Normal과 월드에있는 Vertex의 Normal을 곱하여 월드상 한 픽셀의 Normal값을 구합니다.
 
 구한 정보를 Light연산을 위하여 0~1값으로 재조정 후 그립니다.
+
+구현위치 - SHader_Mesh.hlsl Line[125~140]
 
 ![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/fe5284d4-4c61-4542-a0a5-252c33fe9d40)
 
@@ -56,7 +63,10 @@ Normal값을 -1~1의 형태로 다시 변환합니다.
 
 (빛의 최솟값을 정해두기 위하여(완전 흑백 방지) LightAmbient와 MtrlAmbient간의 곱을 더해줍니다)
 
+구현위치 - SHader_Defferd.hlsl Line[124~180]
+
 ![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/2e104e57-f87c-436b-9e79-c7784f1673f3)
 
 마지막으로 저장된 Diffuse값과 Shade값을 곱하여 빛에의한 음영을 구현합니다.
 
+구현위치 - SHader_Defferd.hlsl Line[361~373]
