@@ -46,7 +46,7 @@ VertexShader 단계에서 구한 Tangent Binormal Normal값을 각각 Right Up L
 
 이미지상 Normal과 월드에있는 Vertex의 Normal을 곱하여 월드상 한 픽셀의 Normal값을 구합니다.
 
-구한 정보를 Light연산을 위하여 0~1값으로 재조정 후 그립산
+구한 정보를 Light연산을 위하여 0~1값으로 재조정 후 그립니다.
 
 ![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/fe5284d4-4c61-4542-a0a5-252c33fe9d40)
 
