@@ -69,7 +69,9 @@ Light의 방향, 좌표, 거리, Diffuse, Ambient, Specular값을 각각 바인�
 
 ![36-2](https://github.com/KimDaeMins/Portfolio/assets/68540137/a5ed4112-9e8e-4b27-b2d5-a606d2235aff)
 
+노란선은 빛기준 그려진 맵
 
+화면은 카메라 기준 그려진 맵으로 두었을 때 바닥좌표의 빛기준 z값은 빛기준으로 그려진 맵에 같은 위치의 z값과 다르다 라는점을 이용했습니다.
 
 
 
