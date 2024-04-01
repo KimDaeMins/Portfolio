@@ -1,105 +1,76 @@
-# Control & Transformation Matrix
+# 그림자
 
-## 애니메이션 상으로는 조절되지 않은 뼈의 추가적인 회전 및 이동
+## 객체들의 그림자를 구현했습니다.
 
-<img width="232" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/23e31200-c1a8-49cf-b4b9-15561b6c6914">
+![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/88ab2a5a-a5c6-44de-84e3-8527cf6c5696)
+
+## 코드 진행
+#### 0. 카메라 기준에서의 객체를 랜더링 합니다.
+
+![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/d6c0a75c-4be8-4ff7-b15e-70b6426b3ce0)
+
+랜더링 과정에서 Depth값을 따로 그립니다.
+
+#### 1. Light 기준에서 객체를 바라보는 느낌으로 객체를 랜더링합니다.
+
+![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/c61ca59b-eeed-456b-b3ac-f0e0042f9b34)
+
+객체 랜더링시 Light기준 ViewMatrix와 ProjMatrix를 따로 전달하여 그립니다.
+
+Diffuse값은 투명한 부분을 처리하기 위하여 따로 전달했습니다.
+
+![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/54f4f760-60b8-4846-a9db-dfb7bb3665b3)
+
+VertexShader 단계에서 Vertex의 좌표들을 카메라 기준이 아닌 Light기준으로 정렬해서 PixeShader로 옮깁니다.
+
+구현위치 - Shader_AnimMesh.hlsl Line[186-208]
+
+![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/f8c3cc0b-3c97-43e1-b4b4-dc7dd459c6be)
+
+PixelShader 단계에서 Diffuse에 의한 Discard를 제외한 나머지부분의 Z값을 w로 나눈 후 (0~1이 됩니다) 텍스쳐에 그립니다.
+
+구현위치 Shader_AnimMesh.hlsl Line[222~233]
+
+#### 2. Light연산 
+
+![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/8fcf5d16-1566-4308-81e6-18b2e29c71a7)
+
+빛을 관리하는 Light_Manager의 Render에서 
+
+카메라 기준으로 저장된 Target_Depth, Light기준으로 저장된 Target_LightDepth를 각각 바인딩 합니다.
+
+또한 월드상태로의 변환을 위하여 Light기준의 View, Proj Matrix와 카메라상의 Inverse View, Inverse Proj Matrix, CamPosition을 바인딩 하고.
+
+Light의 방향, 좌표, 거리, Diffuse, Ambient, Specular값을 각각 바인딩합니다.
+
+![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/534513aa-9d3c-4249-8980-df3f4b6fbd94)
+
+이후 DefferedShader단계에서 UV값을 -1, 1 값으로 전환 및 z값을 구하여 투영스페이스상에서의 좌표를 구합니다,
+
+이후 카메라의 뷰스페이스의 역행렬과 투영스페이스의 역행렬을 곱해주어 월드스페이스상의 위치를 구합니다.
+
+![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/bad47508-b998-4647-b422-8a99ef64be6d)
+
+구한 월드스페이스상의 좌표에 View Matrix와 Proj Matrix 를 곱해주어 빛 기준 투영스페이스에서의 좌표를 구한 후 w나누기를 한 후
+
+-1, 1 사이로 되어있는 화면을 0, 1 값으로 변환합니다(UV좌표로 변환)
+
+![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/64ac8cd5-55fa-4483-9813-9114a769e107)
+
+마지막으로 월드좌표의 빛기준 z값을 구한 후 똑같은 값일때의 부동소숫점 오차 방지를 위해 작은 값(bias)을 빼줍니다.
+
+빛을 그릴때 저장했던 depthTexture에서 같은 UV값을 추출하여 카메라상 그려진 객체의 빛기준으로 본 z값과 빛 방향에서 그린 z값을 비교합니다.
+
+카메라상 그려진 객체릐 빛기준 z값이 빛에서 그린 z값과 같거나 작다면 빛을 받는 부분이고, 크다면 빛을 받지 않는 부분으로 색 밝기를 줄입니다.
+
+구현위치 Shader_Deffered.hlsl Line[124~181]
+
+#### 참고 자료
+
+![36-2](https://github.com/KimDaeMins/Portfolio/assets/68540137/a5ed4112-9e8e-4b27-b2d5-a606d2235aff)
 
 
-## 핵심 코드
 
-<img width="791" alt="8-1" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/77ed9525-1f98-434a-867e-0b53a07ef490">
 
-## 설명
 
-  부모의 TransformationMatrix 를 적용하는 Update_CombinedTransformationMatrix() 함수에서
-
-  회전값과 이동값의 매트릭스를 추가로 곱해주어 적용합니다. ( m_ControllMatrix, m_ControllTranslationMatrix)
-
-### 회전값과 이동값 매트릭스를 나눈 이유
-
-  매트릭스의 곱을 적용할 때 크기 -> 자전 -> 이동 -> 공전 -> 부모 의 순으로 곱해주어야 합니다.(행렬의 곱은 역이 성립하지 않기 떄문에)
-
-  이 규칙을 어기고 이동을 한 후 크기조절 매트릭스를 곱하면 이동거리가 크기조절 매트릭스의 크기만큼 커지게 되는 현상들을 볼 수 있습니다.  
-
-  이런 상황에서 정확한 추가 회전값과 이동값을 기존 TramsformationMatrix에 전달하려면 회전과 이동량을 따로 나누어서 전달해야한다고 판단했습니다.
-
-  그래서 현재 Bone의 TransformationMatrix(회전 및 이동값이 들어있는 매트릭스) 의 앞에서 ControlMatrix(회전 행렬) 을 곱해주고 뒤에서 ControllTranslationMatrix(이동 행렬) 을 곱해주어 행렬 계산의 오차를 없앴습니다.
-
-  구현 위치 -  HierarchyNode.cpp - 40~76 Line
-
-### 회전값의 적용 예시
-
-<img width="234" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/29c09d03-fb16-4f43-9305-a2d4b9a97d12">
-
-  플레이어를 바라보는 보스몬스터의 머리
-
-<img width="662" alt="8-2" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/d4f3c328-b5ae-4f74-9f2f-78783f54a3d3">
-
-#### 1. 몬스터의 뼈 -> 플레이어로의 Y축 회전량을 구합니다
-
-    1-1. 몬스터의 방향벡터(MyDir), 플레이어로의 방향벡터(ToTarget)의 Y값을 제거합니다
-
-    1-2. Y값이 제거된 MyDir과 ToTarget을 정규화 시킨 후 내적 합니다 (MyDir·ToTarget)
-
-    1-3. 결과값으로 나온 cosA값의 역코사인값을 가져옵니다 ( 라디안각이 추출됨 )
-
-    1-4. 뼈의 회전범위를 조절합니다.
-
-    1-5. 외적을 통해 좌우를 판단하여 회전각에 적용합니다. (MyDir X ToTarget 의 y값으로 비교)
-
-#### 2. 몬스터의 뼈 -> 플레이어로의 X축 회전량을 구합니다
-
-    2-1. 1-1에서 구한 ToTarget의 Y값을 제거한 Vector와 ToTarget을 정규화시킨 후 내적합니다 (ZeroYToTarget·ToTarget)
-
-    2-2. 플레이어의 현재 위치와 뼈의 위치를 비교하여 상하를 판단하여 회전각에 적용합니다
-
-#### 3. 회전 매트릭스를 만든 후 컨트롤매트릭스에 적용합니다.
-
-    3-1. 회전할 뼈의 매트릭스의 회전값의 역행렬을 구합니다. (원점에서 회전하기 위함)
-  
-    3-2. 1, 2에서 구한 회전값으로 회전매트릭스를 만듭니다.
-  
-    3-3. 회전 오차를 조절하기위하여 싱크매트릭스를 만듭니다.
-
-    3-4. 3-2 * 3-3 * 3-1 의 값을 컨트롤 매트릭스에 적용합니다.
-
-    구현위치 - SpiderTank_Idle.cpp 61~115
-
-## 회전값 적용 개선사항
-
-    Unity를 배우며 이 방법이 아닌 쿼터니언을 사용했다면 훨씬 쉽고 빠른 코드가 되지않았을까 싶습니다.
-
-    보스의 회전에서 보스to플레이어까지의 회전을 그냥 적용시키면 되는 부분을 돌아서 갔다고 생각하는데,
-
-    그래도 얻어간 점이라면 행렬에 대한 이해를 확실히 했다고 생각합니다.
-  
-### 이동값의 적용 예시
-
-<img width="232" alt="image" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/051233e9-d9b3-467a-b78d-88e13fa2aa67">
-
-    뼈의 길이를 플레이어에게까지 늘려 혓바닥 갈고리가 플레이어에게 닿는 모습
-    
-<img width="635" alt="8-3p" src="https://github.com/KimDaeMins/Portfolio/assets/68540137/0b83804d-0ae9-4b9f-ad16-1fcbfe01b9ff">
-
-#### 1. 몬스터를 플레이어 방향으로 회전합니다.
-    
-    1-1. 플레이어 - 몬스터 -> 플레이어로의 방향(dir)
-
-    1-2. dir벡터에 맞춰서 Look, Right, Up 벡터를 설정 후 회전행렬을 구성합니다
-
-#### 2. 플레이어와의 거리 - 최대거리의 크기를 구한 후 1초당 이동량을 구합니다
-
-    2-1. 이미 회전을 시킨 상태이니 z축 양의방향을 바라보는 상태에서 애니메이션상 
-    
-    뼈의 최대 길이를 뺀 값(고정값 6)을 구합니다. -> 애니메이션에서 뼈가 살짝 늘어나는 부분떄문에 오차를 구했습니다.
-
-    2-2. (플레이어 위치 - 애니메이션상 뼈가 제일 늘어났을때의 위치) 의 길이만큼 z축 양의방향으로 늘린 벡터를 만듭니다.
-
-    2-3. 애니메이션에 따라 서서히 증가해야하기때문에 속도값과 Duration을 구해서 한 Tick당 이동량을 구합니다.
-
-#### 3. 특정 뼈의 ControlTranslationMatrix에 적용합니다
-
-    3-1. 2-3 에서 구한 Tick당 이동량을 Update에서 m_ControlTranslationMatix에 적용합니다.
-
-     구현위치 - FrogTongueInit.cpp 61~115
 
