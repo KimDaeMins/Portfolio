@@ -12,6 +12,10 @@ DirectX기능은 레퍼런스 카운팅을 하는 pointer형에서 ComPtr로 변
 
 new 를 사용하는 객체들은 전부 스마트포인터화 하여 레퍼런스 카운팅을 체크하여 메모리를 해제하거나 레퍼런스 카운팅을 증가시키는 부분을 제거했습니다.
 
+![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/8ae72fa7-ba8c-463d-86bd-98b9c00761b7)
+
+void의 shared_ptr 배열을 만들었습니다. Deleter를 이용하여 삭제를 관리합니다.
+
 ## 2. c++ 20의 기능 사용
 
 ![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/4de81a4a-b7e0-4887-8db7-7e40ee5a254b)
