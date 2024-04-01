@@ -1,7 +1,6 @@
-![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/160c13b0-eb83-412d-a0ed-b9e2cae009c6)# Frustum Culling
+# Frustum Culling
 
 ## 랜더링 최적화를 위하여 절두체 컬링을 구현했습니다.
-
 
 ## 코드 진행
 
