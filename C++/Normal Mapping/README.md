@@ -48,6 +48,10 @@ VertexShader 단계에서 구한 Tangent Binormal Normal값을 각각 Right Up L
 
 구한 정보를 Light연산을 위하여 0~1값으로 재조정 후 그립니다.
 
+구현위치 - SHader_Mesh.hlsl Line[142~175]
+
+#### 4. 빛 적용
+
 ![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/fe5284d4-4c61-4542-a0a5-252c33fe9d40)
 
 Defferd연산 단계에서 Texture형태로 저장한 Normal값과 Depth값 불러옵니다.
@@ -67,6 +71,8 @@ Normal값을 -1~1의 형태로 다시 변환합니다.
 (빛의 최솟값을 정해두기 위하여(완전 흑백 방지) LightAmbient와 MtrlAmbient간의 곱을 더해줍니다)
 
 구현위치 - SHader_Defferd.hlsl Line[124~180]
+
+#### 5. 최종 연산
 
 ![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/2e104e57-f87c-436b-9e79-c7784f1673f3)
 
