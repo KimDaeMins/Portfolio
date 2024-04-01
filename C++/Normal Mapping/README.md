@@ -8,7 +8,7 @@
 
 ## 코드 진행
 
-![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/1a119677-7013-47f2-8011-e555be77d836)
+![image](https://github.com/KimDaeMins/Portfolio/assets/68540137/aa5fc50b-bb03-4402-b89c-0bf9f54b69d9)
 
 최초 mesh 를 불러올 때 각 vertex별로 존재하는 Normal값, Tangent값, Position값, UV을 저장합니다.
 
