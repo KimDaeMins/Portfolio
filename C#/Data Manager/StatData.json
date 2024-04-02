@@ -1,0 +1,28 @@
+{
+  "stats": [
+    {
+      "id": "1",
+      "price": "1",
+      "hp": "100",
+      "mp": "40",
+      "ad": "10",
+      "ap": "50",
+      "motionSpeed": "1",
+      "moveSpeed": "1",
+      "range": "1",
+      "skillId": "1"
+    },
+    {
+      "id": "2",
+      "price": "1",
+      "hp": "100",
+      "mp": "40",
+      "ad": "10",
+      "ap": "100",
+      "motionSpeed": "1",
+      "moveSpeed": "1",
+      "range": "4",
+      "skillId": "2"
+    }
+  ]
+} 

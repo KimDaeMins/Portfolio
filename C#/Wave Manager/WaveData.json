@@ -1,0 +1,136 @@
+{
+  "waves": [
+    {
+      "spawnName": "Spawn1",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn2",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn3",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn4",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn5",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn6",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn7",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn8",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn9",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn10",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn11",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn12",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn13",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn14",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn15",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn16",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn17",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn18",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn19",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn20",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn21",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn22",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn23",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn24",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn25",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn26",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn27",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn28",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn29",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn30",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn31",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn32",
+      "waitTime": "3"
+    },
+    {
+      "spawnName": "Spawn33",
+      "waitTime": "3"
+    }
+  ]
+}
